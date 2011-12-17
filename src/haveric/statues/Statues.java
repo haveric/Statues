@@ -67,23 +67,25 @@ public class Statues extends JavaPlugin{
     
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
 		String title = ChatColor.DARK_AQUA + "[" + ChatColor.GRAY + "Statues" + ChatColor.DARK_AQUA + "] ";
+		String msgColor = ChatColor.DARK_AQUA;
+		String highlightColor = ChatColor.DARK_YELLOW;
 		
 		if(sender.isOp() || (perm != null && perm.has((Player)sender, permBuild))){
 			if (commandLabel.equalsIgnoreCase(cmdStatue) || commandLabel.equalsIgnoreCase(cmdStatueAlt)){
 				
 				if(args.length == 0 || (args.length == 1 && args[0].equalsIgnoreCase(cmdHelp))){
-					sender.sendMessage(title+" Command list. Use /statue or /statues, [optional]");
-					sender.sendMessage("/statue build - Resets player to you if you set build [name].");
-					sender.sendMessage("/statue build [name] - Sets the player to [name]");
-					sender.sendMessage("Right Click on a Diamond Block while holding a Wool Block to build a statue.");
+					sender.sendMessage(title+"github.com/haveric/statues - v1.0");
+					sender.sendMessage(msgColor+"With wool right click a diamond block to construct the statue");
+					sender.sendMessage(msgColor+"/statue build - Sets statue name to your name.");
+					sender.sendMessage(msgColor+"/statue build [name] - Sets the statue name to [name]");
 				} else if (args.length == 1){
 					if (args[0].equalsIgnoreCase(cmdBuild)){
-						sender.sendMessage("Please right click on a diamond block where you'd like your statue to be");
+						sender.sendMessage(msgColor+" With wool right click a diamond block to construct the statue of your player.");
 						playerToBuildName = null;
 					}
 				} else if (args.length == 2){
 					if (args[0].equalsIgnoreCase(cmdBuild)){
-						sender.sendMessage("Please right click on a diamond block where you'd like "+args[1]+"'s statue to be");
+						sender.sendMessage(msgColor+"With wool right click a diamond block to construct "+hightlightColor+args[1]+"'s"+msgColor+" statue");
 						playerToBuildName = args[1];
 					}
 				}
