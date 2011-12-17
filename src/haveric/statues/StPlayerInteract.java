@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-//import net.milkbowl.vault.permission.Permission;
-
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.Location;
