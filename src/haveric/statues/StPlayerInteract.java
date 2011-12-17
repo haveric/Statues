@@ -67,6 +67,8 @@ public class StPlayerInteract extends PlayerListener{
 		Block block = event.getClickedBlock();
 		
         ItemStack holding = player.getItemInHand();
+
+		Boolean chattyPlayerMessages = true; // implement as plugin option
         
 		String playerName;
 		if (plugin.playerToBuildName != null){
@@ -89,7 +91,7 @@ public class StPlayerInteract extends PlayerListener{
 	
 					if ()
 
-					player.sendMessage('Downloading pixel data through redstone modem');
+					if (chattyPlayerMessages) { player.sendMessage("Downloading pixel data through redstone modem"); }
 
 					int[][][] pixelData = null;
 					
@@ -112,16 +114,15 @@ public class StPlayerInteract extends PlayerListener{
 						}
 					}
 
-					player.sendMessage('Creating pixel mapping matrix for woolBit color space');
-
-					player.sendMessage('Shearing sheep...');
+					if (chattyPlayerMessages) { player.sendMessage("Creating pixel mapping matrix for woolBit color space"); }
+					if (chattyPlayerMessages) { player.sendMessage("Shearing sheep..."); }
 
 					createStatue(world,direction,block.getX(),block.getY(),block.getZ(),pixelData);
 
-					player.sendMessage('Boom! Look at that statue of "+playerName+"!');
+					if (chattyPlayerMessages) { player.sendMessage("Boom! Look at that statue of "+playerName+"!"); }
 					
 				} catch(Exception e){
-					player.sendMessage('The skin for "+playerName+" was not found! cApiTAliZation & speeling?');
+					player.sendMessage("The skin for "+playerName+" was not found. Please check your cApiTAliZation & speeling.");
 				}
 				
 			}
