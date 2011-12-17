@@ -88,8 +88,6 @@ public class StPlayerInteract extends PlayerListener{
 					URLConnection urlConnection = url.openConnection();
 		
 					BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
-	
-					if ()
 
 					if (chattyPlayerMessages) { player.sendMessage("Downloading pixel data through redstone modem"); }
 

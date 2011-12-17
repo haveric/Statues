@@ -67,25 +67,25 @@ public class Statues extends JavaPlugin{
     
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
 		String title = ChatColor.DARK_AQUA + "[" + ChatColor.GRAY + "Statues" + ChatColor.DARK_AQUA + "] ";
-		String msgColor = ChatColor.DARK_AQUA;
-		String highlightColor = ChatColor.DARK_YELLOW;
+		ChatColor msgColor = ChatColor.DARK_AQUA;
+		ChatColor highlightColor = ChatColor.YELLOW;
 		
 		if(sender.isOp() || (perm != null && perm.has((Player)sender, permBuild))){
 			if (commandLabel.equalsIgnoreCase(cmdStatue) || commandLabel.equalsIgnoreCase(cmdStatueAlt)){
 				
 				if(args.length == 0 || (args.length == 1 && args[0].equalsIgnoreCase(cmdHelp))){
-					sender.sendMessage(title+"github.com/haveric/statues - v1.0");
-					sender.sendMessage(msgColor+"With wool right click a diamond block to construct the statue");
-					sender.sendMessage(msgColor+"/statue build - Sets statue name to your name.");
-					sender.sendMessage(msgColor+"/statue build [name] - Sets the statue name to [name]");
+					sender.sendMessage(title+"github.com/haveric/statues - v" + getDescription().getVersion());
+					sender.sendMessage(msgColor + "With wool right click a diamond block to construct the statue");
+					sender.sendMessage("/statue build - " + msgColor + "Sets statue name to your name.");
+					sender.sendMessage("/statue build [name] - " + msgColor +"Sets the statue name to [name]");
 				} else if (args.length == 1){
 					if (args[0].equalsIgnoreCase(cmdBuild)){
-						sender.sendMessage(msgColor+" With wool right click a diamond block to construct the statue of your player.");
+						sender.sendMessage(msgColor+"With wool, right click a diamond block to construct the statue of your player.");
 						playerToBuildName = null;
 					}
 				} else if (args.length == 2){
 					if (args[0].equalsIgnoreCase(cmdBuild)){
-						sender.sendMessage(msgColor+"With wool right click a diamond block to construct "+hightlightColor+args[1]+"'s"+msgColor+" statue");
+						sender.sendMessage(msgColor+"With wool, right click a diamond block to construct "+highlightColor+args[1]+"'s"+msgColor+" statue");
 						playerToBuildName = args[1];
 					}
 				}
