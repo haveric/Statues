@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-//import net.milkbowl.vault.permission.Permission;
-
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.Location;
@@ -35,7 +33,6 @@ public class StPlayerInteract extends PlayerListener{
 	public static Statues plugin;
 
 	ArrayList<Item> items;
-	
 	
 	public StPlayerInteract(Statues st){
 		plugin = st;
@@ -70,6 +67,8 @@ public class StPlayerInteract extends PlayerListener{
 		Block block = event.getClickedBlock();
 		
         ItemStack holding = player.getItemInHand();
+
+		Boolean chattyPlayerMessages = true; // implement as plugin option
         
 		String playerName;
 		if (plugin.playerToBuildName != null){
@@ -82,15 +81,18 @@ public class StPlayerInteract extends PlayerListener{
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.DIAMOND_BLOCK && holding.getType() == Material.WOOL){
 
 				int direction = getDirection(player.getLocation(),block);
-				player.sendMessage("dir: " + direction);
+				player.sendMessage("Statue attempted with direction: " + direction);
 				URL url;
 				try {
 					url = new URL("http://s3.amazonaws.com/MinecraftSkins/"+playerName+".png");
 					URLConnection urlConnection = url.openConnection();
-	
-	
+		
 					BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
 	
+					if ()
+
+					if (chattyPlayerMessages) { player.sendMessage("Downloading pixel data through redstone modem"); }
+
 					int[][][] pixelData = null;
 					
 					BufferedImage img = ImageIO.read(in);
@@ -111,11 +113,16 @@ public class StPlayerInteract extends PlayerListener{
 							counter++;
 						}
 					}
-					
+
+					if (chattyPlayerMessages) { player.sendMessage("Creating pixel mapping matrix for woolBit color space"); }
+					if (chattyPlayerMessages) { player.sendMessage("Shearing sheep..."); }
+
 					createStatue(world,direction,block.getX(),block.getY(),block.getZ(),pixelData);
+
+					if (chattyPlayerMessages) { player.sendMessage("Boom! Look at that statue of "+playerName+"!"); }
 					
 				} catch(Exception e){
-					player.sendMessage("Error: "+playerName+"does not exist. Please check your spelling and capitalization.");
+					player.sendMessage("The skin for "+playerName+" was not found. Please check your cApiTAliZation & speeling.");
 				}
 				
 			}
