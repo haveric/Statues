@@ -6,11 +6,12 @@ import java.io.BufferedInputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 
+import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -21,8 +22,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
 
-
-
 public class StPlayerInteract extends PlayerListener{
 	int NONE = 0;
 	int XGREATER = 1;
@@ -31,7 +30,7 @@ public class StPlayerInteract extends PlayerListener{
 	int ZLESS = 4;
 	
 	public static Statues plugin;
-
+	
 	ArrayList<Item> items;
 	
 	public StPlayerInteract(Statues st){
@@ -60,6 +59,7 @@ public class StPlayerInteract extends PlayerListener{
 	}
 	
 	public void onPlayerInteract(PlayerInteractEvent event){
+		Economy econ = plugin.getEcon();
 		Permission perm = plugin.getPerm();
 		Player player = event.getPlayer();
 		
@@ -68,20 +68,23 @@ public class StPlayerInteract extends PlayerListener{
 		
         ItemStack holding = player.getItemInHand();
 
-		Boolean chattyPlayerMessages = true; // implement as plugin option
+		boolean chattyPlayerMessages = true; // TODO: implement as plugin option
         
-		String playerName;
-		if (plugin.playerToBuildName != null){
-			playerName = plugin.playerToBuildName;
-		} else {
-			playerName = player.getName(); // default to current player
-		}
+		String playerName = PlayerToBuild.getPlayer(player);
 		
-		if(player.isOp() || (perm != null && perm.has(player, plugin.permBuild))){
+		boolean currencyEnabled = true;
+		if(player.isOp() || (perm != null && perm.has(player, Perms.getBuild()))){
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.DIAMOND_BLOCK && holding.getType() == Material.WOOL){
 
+				if (econ == null || perm.has(player,Perms.getIgnoreCost())){
+					currencyEnabled = false;
+				} else if (!econ.has(player.getName(), plugin.COST_DEFAULT)){
+            		player.sendMessage(ChatColor.RED + "Not enough money to create a statue. Need " + plugin.COST_DEFAULT);
+            		return;
+            	}
+				
 				int direction = getDirection(player.getLocation(),block);
-				player.sendMessage("Statue attempted with direction: " + direction);
+				//player.sendMessage("Statue attempted with direction: " + direction);
 				URL url;
 				try {
 					url = new URL("http://s3.amazonaws.com/MinecraftSkins/"+playerName+".png");
@@ -89,7 +92,9 @@ public class StPlayerInteract extends PlayerListener{
 		
 					BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
-					if (chattyPlayerMessages) { player.sendMessage("Downloading pixel data through redstone modem"); }
+					if (chattyPlayerMessages) { 
+						player.sendMessage("Downloading pixel data through redstone modem"); 
+					}
 
 					int[][][] pixelData = null;
 					
@@ -99,7 +104,6 @@ public class StPlayerInteract extends PlayerListener{
 					pixelData = new int[img.getWidth()][img.getHeight()][4];
 					int[] rgb;
 	
-					int counter = 0;
 					for(int i = 0; i < img.getHeight(); i++){
 						for (int j = 0; j < img.getWidth(); j++){
 							rgb = getPixelData(img, j, i);
@@ -108,16 +112,23 @@ public class StPlayerInteract extends PlayerListener{
 								pixelData[j][i][k] = rgb[k];
 	
 							}
-							counter++;
 						}
 					}
 
-					if (chattyPlayerMessages) { player.sendMessage("Creating pixel mapping matrix for woolBit color space"); }
-					if (chattyPlayerMessages) { player.sendMessage("Shearing sheep..."); }
+					if (chattyPlayerMessages) { 
+						player.sendMessage("Creating pixel mapping matrix for woolBit color space");
+						player.sendMessage("Shearing sheep..."); 
+					}
 
 					createStatue(world,direction,block.getX(),block.getY(),block.getZ(),pixelData);
 
-					if (chattyPlayerMessages) { player.sendMessage("Boom! Look at that statue of "+playerName+"!"); }
+                	if (currencyEnabled){
+                    	econ.withdrawPlayer(player.getName(), plugin.COST_DEFAULT);
+                    }
+                	
+					if (chattyPlayerMessages) { 
+						player.sendMessage("Boom! Look at that statue of "+playerName+"!"); 
+					}
 					
 				} catch(Exception e){
 					player.sendMessage("The skin for "+playerName+" was not found. Please check your cApiTAliZation & speeling.");

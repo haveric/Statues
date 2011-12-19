@@ -5,10 +5,6 @@ import java.util.logging.Logger;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -17,26 +13,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Statues extends JavaPlugin{
 	public static final Logger log = Logger.getLogger("Minecraft");
 	private final StPlayerInteract playerInteract = new StPlayerInteract(this);
+	private Commands commands = new Commands(this);
 
 	// Vault
 	private Economy econ;
 	private Permission perm;
 
-	// Perms
-	public String permBuild = "statues.build";
-	public String permIC 	= "statues.ignorecost";
-	public String permICAlt = "statues.ignoreCost";
+	// Config
+	public double COST_DEFAULT = 10000.0;
 	
-	// Commands
-	public String cmdBuild = "build";
-	
-	public String cmdStatue    = "statue";
-	public String cmdStatueAlt = "statues";
-	
-	public String cmdHelp = "help";
-	
-	
-	public String playerToBuildName = null;
 
 	@Override
 	public void onEnable() {		
@@ -44,6 +29,9 @@ public class Statues extends JavaPlugin{
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerInteract, Event.Priority.Normal, this);
 		
         setupVault();
+        
+        getCommand(Commands.getMain()).setExecutor(commands);
+        getCommand(Commands.getMainAlt()).setExecutor(commands);
         
         log.info(String.format("[%s] v%s Started",getDescription().getName(), getDescription().getVersion()));
 	}
@@ -65,36 +53,6 @@ public class Statues extends JavaPlugin{
         }
     }
     
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args){
-		String title = ChatColor.DARK_AQUA + "[" + ChatColor.GRAY + "Statues" + ChatColor.DARK_AQUA + "] ";
-		ChatColor msgColor = ChatColor.DARK_AQUA;
-		ChatColor highlightColor = ChatColor.YELLOW;
-		
-		if(sender.isOp() || (perm != null && perm.has((Player)sender, permBuild))){
-			if (commandLabel.equalsIgnoreCase(cmdStatue) || commandLabel.equalsIgnoreCase(cmdStatueAlt)){
-				
-				if(args.length == 0 || (args.length == 1 && args[0].equalsIgnoreCase(cmdHelp))){
-					sender.sendMessage(title+"github.com/haveric/statues - v" + getDescription().getVersion());
-					sender.sendMessage(msgColor + "With wool right click a diamond block to construct the statue");
-					sender.sendMessage("/statue build - " + msgColor + "Sets statue name to your name.");
-					sender.sendMessage("/statue build [name] - " + msgColor +"Sets the statue name to [name]");
-				} else if (args.length == 1){
-					if (args[0].equalsIgnoreCase(cmdBuild)){
-						sender.sendMessage(msgColor+"With wool, right click a diamond block to construct the statue of your player.");
-						playerToBuildName = null;
-					}
-				} else if (args.length == 2){
-					if (args[0].equalsIgnoreCase(cmdBuild)){
-						sender.sendMessage(msgColor+"With wool, right click a diamond block to construct "+highlightColor+args[1]+"'s"+msgColor+" statue");
-						playerToBuildName = args[1];
-					}
-				}
-			}
-		} else {
-			sender.sendMessage(title+" You do not have access to this command.");
-		}
-		return false;
-	}
 	
     public Permission getPerm(){
     	return perm;
