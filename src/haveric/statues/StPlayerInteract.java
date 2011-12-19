@@ -114,7 +114,7 @@ public class StPlayerInteract extends PlayerListener{
 							}
 						}
 					}
-
+					
 					if (chattyPlayerMessages) { 
 						player.sendMessage("Creating pixel mapping matrix for woolBit color space");
 						player.sendMessage("Shearing sheep..."); 
@@ -159,48 +159,20 @@ public class StPlayerInteract extends PlayerListener{
 
 	private void createStatue(World w,int dir,int wx, int wy, int wz,int[][][] pd) {
 		
-		Material type;
-		int data;
-
+		ArrayList<StatueBlock> statueArray = new ArrayList<StatueBlock>();
 		// top/bottom arms
 		for (int y = 18; y >= 17; y--){
 			// top arm
 			for (int x = 45; x <= 46; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+y-23,wy+19,wz+x-44),type,data);
-					placeBlock(w.getBlockAt(wx+y-11,wy+19,wz+x-44),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-y+23,wy+19,wz-x+44),type,data);
-					placeBlock(w.getBlockAt(wx-y+11,wy+19,wz-x+44),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x-44,wy+19,wz-y+23),type,data);
-					placeBlock(w.getBlockAt(wx+x-44,wy+19,wz-y+11),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x+44,wy+19,wz+y-23),type,data);
-					placeBlock(w.getBlockAt(wx-x+44,wy+19,wz+y-11),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-23,wy+19,wz+x-44), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-11,wy+19,wz+x-44), item));
 			}
 			// bottom arm
 			for (int x = 49; x <= 50; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+y-23,wy+8,wz+x-48),type,data);
-					placeBlock(w.getBlockAt(wx+y-11,wy+8,wz+x-48),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-y+23,wy+8,wz-x+48),type,data);
-					placeBlock(w.getBlockAt(wx-y+11,wy+8,wz-x+48),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x-48,wy+8,wz-y+23),type,data);
-					placeBlock(w.getBlockAt(wx+x-48,wy+8,wz-y+11),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x+48,wy+8,wz+y-23),type,data);
-					placeBlock(w.getBlockAt(wx-x+48,wy+8,wz+y-11),type,data);
-				}				
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-23,wy+8,wz+x-48), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-11,wy+8,wz+x-48), item));			
 			}
 		}
 		
@@ -209,32 +181,12 @@ public class StPlayerInteract extends PlayerListener{
 			// top head
 			for (int x = 9; x <= 14; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+y-3,wy+27,wz+x-10),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-y+3,wy+27,wz-x+10),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x-10,wy+27,wz-y+3),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x+10,wy+27,wz+y-3),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-3,wy+27,wz+x-10), item));
 			}
 			// bottom head
 			for (int x = 17; x <= 22; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+y-3,wy+20,wz+x-18),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-y+3,wy+20,wz-x+18),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x-18,wy+20,wz-y+3),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x+18,wy+20,wz+y-3),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-3,wy+20,wz+x-18), item));
 			}
 		}
 		// main head
@@ -242,62 +194,22 @@ public class StPlayerInteract extends PlayerListener{
 			// head right side
 			for (int x = 1; x <=6; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+4,wy-y+35,wz+x-2),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-4,wy-y+35,wz-x+2),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x-2,wy-y+35,wz-4),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x+2,wy-y+35,wz+4),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+4,wy-y+35,wz+x-2), item));
 			}
 			// head front
 			for (int x = 8; x <=15; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+x-7-4,wy-y+35,wz-2)    ,type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-x+7+4,wy-y+35,wz+2)    ,type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx-2    ,wy-y+35,wz+x-8-4),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx+2    ,wy-y+35,wz-x+8+4),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-7-4,wy-y+35,wz-2), item));
 			}
 			// head left side
 			for (int x = 17; x <= 22; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+1-4,wy-y+35,wz+x-18),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-1+4,wy-y+35,wz-x+18),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x-18,wy-y+35,wz-1+4),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x+18,wy-y+35,wz+1-4),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-4,wy-y+35,wz+x-18), item));
 			}
 			// head back
 			for (int x = 24; x <= 31; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+x-23-4,wy-y+35,wz+5)    ,type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-x+23+4,wy-y+35,wz-5)    ,type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+5    ,wy-y+35,wz+x-24-4),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-5    ,wy-y+35,wz-x+24+4),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-23-4,wy-y+35,wz+5), item));
 			}
 		}
 		// bottom row of 12 pixels tall
@@ -305,232 +217,132 @@ public class StPlayerInteract extends PlayerListener{
 			// legs sides
 			for (int x = 1; x <= 2; x ++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx-3,wy-y+31,wz+x),type,data);
-					placeBlock(w.getBlockAt(wx+4,wy-y+31,wz+x),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx+3,wy-y+31,wz-x),type,data);
-					placeBlock(w.getBlockAt(wx-4,wy-y+31,wz-x),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x,wy-y+31,wz-4),type,data);
-					placeBlock(w.getBlockAt(wx+x,wy-y+31,wz+3),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x,wy-y+31,wz+4),type,data);
-					placeBlock(w.getBlockAt(wx-x,wy-y+31,wz-3),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-3,wy-y+31,wz+x), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+4,wy-y+31,wz+x), item));
 			}
 			
 			// legs front
 			for (int x = 4; x < 8; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+x-3,wy-y+31,wz)    ,type,data);
-					placeBlock(w.getBlockAt(wx-x+4,wy-y+31,wz)    ,type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-x+3,wy-y+31,wz)    ,type,data);
-					placeBlock(w.getBlockAt(wx+x-4,wy-y+31,wz)    ,type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx    ,wy-y+31,wz+x-4),type,data);
-					placeBlock(w.getBlockAt(wx    ,wy-y+31,wz-x+3),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx    ,wy-y+31,wz-x+4),type,data);
-					placeBlock(w.getBlockAt(wx    ,wy-y+31,wz+x-3),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-3,wy-y+31,wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+4,wy-y+31,wz), item));
 			}
 			
 			// legs insides
 			for (int x = 9; x <= 10; x ++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx-0,wy-y+31,wz+x-8),type,data);
-					placeBlock(w.getBlockAt(wx+1,wy-y+31,wz+x-8),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx+0,wy-y+31,wz-x+8),type,data);
-					placeBlock(w.getBlockAt(wx-1,wy-y+31,wz-x+8),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x-8,wy-y+31,wz-1),type,data);
-					placeBlock(w.getBlockAt(wx+x-8,wy-y+31,wz+0),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x+8,wy-y+31,wz+1),type,data);
-					placeBlock(w.getBlockAt(wx-x+8,wy-y+31,wz-0),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-0,wy-y+31,wz+x-8), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+1,wy-y+31,wz+x-8), item));
 			}
 			
 			// legs back
 			for (int x = 12; x <= 15; x ++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+x-11,wy-y+31,wz+3)    ,type,data);
-					placeBlock(w.getBlockAt(wx-x+12,wy-y+31,wz+3)    ,type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-x+11,wy-y+31,wz-3)    ,type,data);
-					placeBlock(w.getBlockAt(wx+x-12,wy-y+31,wz-3)    ,type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+3    ,wy-y+31,wz+x-12),type,data);
-					placeBlock(w.getBlockAt(wx+3    ,wy-y+31,wz-x+11),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-3    ,wy-y+31,wz-x+12),type,data);
-					placeBlock(w.getBlockAt(wx-3    ,wy-y+31,wz+x-11),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-11,wy-y+31,wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+12,wy-y+31,wz+3), item));
 			}
 			// body front
 			for(int x = 20; x <= 27; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+x-19-4,wy-y+39,wz)    ,type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-x+19+4,wy-y+39,wz)    ,type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx    ,wy-y+39,wz+x-20-4),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx    ,wy-y+39,wz-x+20+4),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-19-4,wy-y+39,wz), item));
 			}
 			// body left
 			for (int x = 17; x <= 18; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+1-5,wy-y+39,wz+x-16),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-1+5,wy-y+39,wz-x+16),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x-16,wy-y+39,wz-1+5),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x+16,wy-y+39,wz+1-5),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-5,wy-y+39,wz+x-16), item));
 			}
 			
 			//body right
 			for (int x = 29; x <= 30; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+0+4,wy-y+39,wz+x-28),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-0-4,wy-y+39,wz-x+28),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x-28,wy-y+39,wz-0-4),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x+28,wy-y+39,wz+0+4),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+4,wy-y+39,wz+x-28), item));
 			}
 			
 			// body back
 			for(int x = 32; x <= 39; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+x-31-4,wy-y+39,wz+3)    ,type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-x+31+4,wy-y+39,wz-3)    ,type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+3    ,wy-y+39,wz+x-32-4),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-3    ,wy-y+39,wz-x+32+4),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-31-4,wy-y+39,wz+3), item));
 			}
 			// arms inside
 			for (int x=49; x<=50; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+1-5,wy-y+39,wz+x-48),type,data);
-					placeBlock(w.getBlockAt(wx+0+5,wy-y+39,wz+x-48),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-1+5,wy-y+39,wz-x+48),type,data);
-					placeBlock(w.getBlockAt(wx-0-5,wy-y+39,wz-x+48),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x-48,wy-y+39,wz-1+5),type,data);
-					placeBlock(w.getBlockAt(wx+x-48,wy-y+39,wz-0-5),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x+48,wy-y+39,wz+1-5),type,data);
-					placeBlock(w.getBlockAt(wx-x+48,wy-y+39,wz+0+5),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-5,wy-y+39,wz+x-48), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+5,wy-y+39,wz+x-48), item));
 			}
 			// arms outside
 			for (int x=41; x<=42; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+1-8,wy-y+39,wz+x-40),type,data);
-					placeBlock(w.getBlockAt(wx+0+8,wy-y+39,wz+x-40),type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-1+8,wy-y+39,wz-x+40),type,data);
-					placeBlock(w.getBlockAt(wx-0-8,wy-y+39,wz-x+40),type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+x-40,wy-y+39,wz-1+8),type,data);
-					placeBlock(w.getBlockAt(wx+x-40,wy-y+39,wz-0-8),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-x+40,wy-y+39,wz+1-8),type,data);
-					placeBlock(w.getBlockAt(wx-x+40,wy-y+39,wz+0+8),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-8,wy-y+39,wz+x-40), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+8,wy-y+39,wz+x-40), item));
 			}
 			// arms front
 			for(int x=44; x <= 47; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+x-43-8,wy-y+39,wz)    ,type,data);
-					placeBlock(w.getBlockAt(wx-x+44+8,wy-y+39,wz)    ,type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-x+43+8,wy-y+39,wz)    ,type,data);
-					placeBlock(w.getBlockAt(wx+x-44-8,wy-y+39,wz)    ,type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx    ,wy-y+39,wz+x-44-8),type,data);
-					placeBlock(w.getBlockAt(wx    ,wy-y+39,wz-x+43+8),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx    ,wy-y+39,wz-x+44+8),type,data);
-					placeBlock(w.getBlockAt(wx    ,wy-y+39,wz+x-43-8),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-43-8,wy-y+39,wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+44+8,wy-y+39,wz), item));
 			}
 			//arms back
 			for (int x=52; x<=55; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				type = item.getMaterial();
-				data = item.getData();
-				if (dir == ZLESS){
-					placeBlock(w.getBlockAt(wx+x-51-8,wy-y+39,wz+3)    ,type,data);
-					placeBlock(w.getBlockAt(wx-x+52+8,wy-y+39,wz+3)    ,type,data);
-				} else if (dir == ZGREATER){
-					placeBlock(w.getBlockAt(wx-x+51+8,wy-y+39,wz-3)    ,type,data);
-					placeBlock(w.getBlockAt(wx+x-52-8,wy-y+39,wz-3)    ,type,data);
-				} else if (dir == XLESS){
-					placeBlock(w.getBlockAt(wx+3    ,wy-y+39,wz+x-52-8),type,data);
-					placeBlock(w.getBlockAt(wx+3    ,wy-y+39,wz-x+51+8),type,data);
-				} else if (dir == XGREATER){
-					placeBlock(w.getBlockAt(wx-3    ,wy-y+39,wz-x+52+8),type,data);
-					placeBlock(w.getBlockAt(wx-3    ,wy-y+39,wz+x-51-8),type,data);
-				}
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51-8,wy-y+39,wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52+8,wy-y+39,wz+3), item));
 			}
 		}
-		
+		if (dir == ZGREATER){
+			rotate180(w, w.getBlockAt(wx,wy,wz),statueArray);
+		} else if (dir == XLESS){
+			rotateLeft(w, w.getBlockAt(wx,wy,wz),statueArray);
+		} else if (dir == XGREATER){
+			rotateRight(w, w.getBlockAt(wx,wy,wz),statueArray);
+		}
+		for (int i = 0; i < statueArray.size(); i ++){
+			Block block = statueArray.get(i).getBlock();
+			Item item = statueArray.get(i).getItem();
+			if (block.getType() == Material.AIR){
+				block.setType(item.getMaterial());
+				block.setData((byte)item.getData());
+			}
+		}
 	}
 
+	private void rotateRight(World w, Block start, ArrayList<StatueBlock> array){
+		for (int i = 0; i < array.size(); i ++){
+			Block block = array.get(i).getBlock();
+			int bx = block.getX() - start.getX();
+			int bz = block.getZ() - start.getZ();
+			
+			array.get(i).setBlock(w.getBlockAt(block.getX()-bx-bz, block.getY(), block.getZ()-bz-bx+1));
+		}
+	}
+	
+	private void rotateLeft(World w, Block start, ArrayList<StatueBlock> array){
+		for (int i = 0; i < array.size(); i ++){
+			Block block = array.get(i).getBlock();
+			int bx = block.getX() - start.getX();
+			int bz = block.getZ() - start.getZ();
+			
+			array.get(i).setBlock(w.getBlockAt(block.getX()-bx+bz, block.getY(), block.getZ()-bz-bx));
+		}
+	}
+	
+	private void rotate180(World w, Block start, ArrayList<StatueBlock> array){
+		for (int i = 0; i < array.size(); i ++){
+			Block block = array.get(i).getBlock();
+			int bx = block.getX() - start.getX();
+			int bz = block.getZ() - start.getZ();
+			
+			array.get(i).setBlock(w.getBlockAt(block.getX()-bx-bx, block.getY(), block.getZ()-bz-bz));
+		}
+	}
+	
 	private void placeBlock(Block block, Material type) {
 		// TODO: add checks for blocks
 		block.setType(type);
 		block.setData((byte)14);
 	}
 	private void placeBlock(Block block, Material type, int data){
-		block.setType(type);
-		block.setData((byte)data);
+		//block.setType(type);
+		//block.setData((byte)data);
 	}
 
 	private static int[] getPixelData(BufferedImage img, int x, int y){

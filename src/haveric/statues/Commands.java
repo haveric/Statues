@@ -12,7 +12,7 @@ public class Commands implements CommandExecutor{
 
 	Statues plugin;
 	
-	Permission perm;
+	
 	// Commands
 	public static String cmdBuild = "build";
 	
@@ -29,6 +29,7 @@ public class Commands implements CommandExecutor{
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+		Permission perm = plugin.getPerm();
 		ChatColor msgColor = ChatColor.DARK_AQUA;
 		ChatColor highlightColor = ChatColor.YELLOW;
 		
