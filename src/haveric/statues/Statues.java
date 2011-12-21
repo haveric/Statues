@@ -18,9 +18,6 @@ public class Statues extends JavaPlugin{
 	// Vault
 	private Economy econ;
 	private Permission perm;
-
-	// Config
-	public double COST_DEFAULT = 10000.0;
 	
 
 	@Override
@@ -28,7 +25,11 @@ public class Statues extends JavaPlugin{
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerInteract, Event.Priority.Normal, this);
 		
-        setupVault();
+		Config.init(this);
+		
+		setupVault();
+        
+        Config.setup();
         
         getCommand(Commands.getMain()).setExecutor(commands);
         getCommand(Commands.getMainAlt()).setExecutor(commands);

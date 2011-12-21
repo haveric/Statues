@@ -29,6 +29,8 @@ public class StPlayerInteract extends PlayerListener{
 	int ZGREATER = 3;
 	int ZLESS = 4;
 	
+	public enum StatueDirection {ROT_LEFT, ROT_RIGHT, ROT_ONEEIGHTY, SHIFT_LEFT, SHIFT_RIGHT};
+	
 	public static Statues plugin;
 	
 	ArrayList<Item> items;
@@ -67,8 +69,6 @@ public class StPlayerInteract extends PlayerListener{
 		Block block = event.getClickedBlock();
 		
         ItemStack holding = player.getItemInHand();
-
-		boolean chattyPlayerMessages = true; // TODO: implement as plugin option
         
 		String playerName = PlayerToBuild.getPlayer(player);
 		
@@ -78,8 +78,8 @@ public class StPlayerInteract extends PlayerListener{
 
 				if (econ == null || perm.has(player,Perms.getIgnoreCost())){
 					currencyEnabled = false;
-				} else if (!econ.has(player.getName(), plugin.COST_DEFAULT)){
-            		player.sendMessage(ChatColor.RED + "Not enough money to create a statue. Need " + plugin.COST_DEFAULT);
+				} else if (!econ.has(player.getName(), Config.getCost())){
+            		player.sendMessage(ChatColor.RED + "Not enough money to create a statue. Need " + Config.getCost());
             		return;
             	}
 				
@@ -92,7 +92,7 @@ public class StPlayerInteract extends PlayerListener{
 		
 					BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
-					if (chattyPlayerMessages) { 
+					if (Config.isChatty()) { 
 						player.sendMessage("Downloading pixel data through redstone modem"); 
 					}
 
@@ -115,7 +115,7 @@ public class StPlayerInteract extends PlayerListener{
 						}
 					}
 					
-					if (chattyPlayerMessages) { 
+					if (Config.isChatty()) { 
 						player.sendMessage("Creating pixel mapping matrix for woolBit color space");
 						player.sendMessage("Shearing sheep..."); 
 					}
@@ -123,10 +123,10 @@ public class StPlayerInteract extends PlayerListener{
 					createStatue(world,direction,block.getX(),block.getY(),block.getZ(),pixelData);
 
                 	if (currencyEnabled){
-                    	econ.withdrawPlayer(player.getName(), plugin.COST_DEFAULT);
+                    	econ.withdrawPlayer(player.getName(), Config.getCost());
                     }
                 	
-					if (chattyPlayerMessages) { 
+					if (Config.isChatty()) { 
 						player.sendMessage("Boom! Look at that statue of "+playerName+"!"); 
 					}
 					
@@ -289,12 +289,13 @@ public class StPlayerInteract extends PlayerListener{
 			}
 		}
 		if (dir == ZGREATER){
-			rotate180(w, w.getBlockAt(wx,wy,wz),statueArray);
+			rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_ONEEIGHTY);
 		} else if (dir == XLESS){
-			rotateLeft(w, w.getBlockAt(wx,wy,wz),statueArray);
+			rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_LEFT);
 		} else if (dir == XGREATER){
-			rotateRight(w, w.getBlockAt(wx,wy,wz),statueArray);
+			rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_RIGHT);
 		}
+		
 		for (int i = 0; i < statueArray.size(); i ++){
 			Block block = statueArray.get(i).getBlock();
 			Item item = statueArray.get(i).getItem();
@@ -305,44 +306,21 @@ public class StPlayerInteract extends PlayerListener{
 		}
 	}
 
-	private void rotateRight(World w, Block start, ArrayList<StatueBlock> array){
-		for (int i = 0; i < array.size(); i ++){
+	private void rotate(World w, Block start, ArrayList<StatueBlock> array, StatueDirection dir){
+		int size = array.size();
+		for (int i = 0; i < size; i ++){
 			Block block = array.get(i).getBlock();
 			int bx = block.getX() - start.getX();
 			int bz = block.getZ() - start.getZ();
 			
-			array.get(i).setBlock(w.getBlockAt(block.getX()-bx-bz, block.getY(), block.getZ()-bz-bx+1));
+			if (dir == StatueDirection.ROT_RIGHT){
+				array.get(i).setBlock(w.getBlockAt(block.getX()-bx-bz, block.getY(), block.getZ()-bz-bx+1));
+			} else if (dir == StatueDirection.ROT_LEFT){
+				array.get(i).setBlock(w.getBlockAt(block.getX()-bx+bz, block.getY(), block.getZ()-bz-bx));
+			} else if (dir == StatueDirection.ROT_ONEEIGHTY){
+				array.get(i).setBlock(w.getBlockAt(block.getX()-bx-bx, block.getY(), block.getZ()-bz-bz));
+			}
 		}
-	}
-	
-	private void rotateLeft(World w, Block start, ArrayList<StatueBlock> array){
-		for (int i = 0; i < array.size(); i ++){
-			Block block = array.get(i).getBlock();
-			int bx = block.getX() - start.getX();
-			int bz = block.getZ() - start.getZ();
-			
-			array.get(i).setBlock(w.getBlockAt(block.getX()-bx+bz, block.getY(), block.getZ()-bz-bx));
-		}
-	}
-	
-	private void rotate180(World w, Block start, ArrayList<StatueBlock> array){
-		for (int i = 0; i < array.size(); i ++){
-			Block block = array.get(i).getBlock();
-			int bx = block.getX() - start.getX();
-			int bz = block.getZ() - start.getZ();
-			
-			array.get(i).setBlock(w.getBlockAt(block.getX()-bx-bx, block.getY(), block.getZ()-bz-bz));
-		}
-	}
-	
-	private void placeBlock(Block block, Material type) {
-		// TODO: add checks for blocks
-		block.setType(type);
-		block.setData((byte)14);
-	}
-	private void placeBlock(Block block, Material type, int data){
-		//block.setType(type);
-		//block.setData((byte)data);
 	}
 
 	private static int[] getPixelData(BufferedImage img, int x, int y){
@@ -361,7 +339,8 @@ public class StPlayerInteract extends PlayerListener{
 	private Item getItem(int r, int g, int b, int a){
 		int red,green,blue;
 		double tempDif;
-		double rmean,weightR,weightG,weightB;
+		//double rmean;
+		double weightR,weightG,weightB;
 		
 		double dif = 10000;
 		int val = 0;
