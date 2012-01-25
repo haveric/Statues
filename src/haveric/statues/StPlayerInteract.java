@@ -17,12 +17,13 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
 
-public class StPlayerInteract extends PlayerListener{
+public class StPlayerInteract implements Listener{
 	int NONE = 0;
 	int XGREATER = 1;
 	int XLESS = 2;
@@ -60,6 +61,7 @@ public class StPlayerInteract extends PlayerListener{
 		items.add(new Item(Material.SANDSTONE, 0, new Color(196,160,119)));
 	}
 	
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){
 		Economy econ = plugin.getEcon();
 		Permission perm = plugin.getPerm();
@@ -75,7 +77,7 @@ public class StPlayerInteract extends PlayerListener{
 		boolean currencyEnabled = true;
 		if(player.isOp() || (perm != null && perm.has(player, Perms.getBuild()))){
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.DIAMOND_BLOCK && holding.getType() == Material.WOOL){
-
+				
 				if (econ == null || perm.has(player,Perms.getIgnoreCost())){
 					currencyEnabled = false;
 				} else if (!econ.has(player.getName(), Config.getCost())){
@@ -230,9 +232,9 @@ public class StPlayerInteract extends PlayerListener{
 			
 			// legs insides
 			for (int x = 9; x <= 10; x ++){
-				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-0,wy-y+31,wz+x-8), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+1,wy-y+31,wz+x-8), item));
+				//Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
+				//statueArray.add(new StatueBlock(w.getBlockAt(wx-0,wy-y+31,wz+x-8), item));
+				//statueArray.add(new StatueBlock(w.getBlockAt(wx+1,wy-y+31,wz+x-8), item));
 			}
 			
 			// legs back
