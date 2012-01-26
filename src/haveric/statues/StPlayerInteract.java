@@ -29,16 +29,18 @@ public class StPlayerInteract implements Listener{
 	int XLESS = 2;
 	int ZGREATER = 3;
 	int ZLESS = 4;
-	
+
 	public enum StatueDirection {ROT_LEFT, ROT_RIGHT, ROT_ONEEIGHTY, SHIFT_LEFT, SHIFT_RIGHT};
-	
+
 	public static Statues plugin;
-	
+
 	ArrayList<Item> items;
-	
+
 	public StPlayerInteract(Statues st){
 		plugin = st;
-		
+
+		// TODO: load from file
+		// TODO: fix pink skin disease
 		items = new ArrayList<Item>();
 		items.add(new Item(Material.WOOL,  0, new Color(255,255,255))); // white
 		items.add(new Item(Material.WOOL,  1, new Color(235,136,68 ))); // orange
@@ -56,70 +58,71 @@ public class StPlayerInteract implements Listener{
 		items.add(new Item(Material.WOOL, 13, new Color(61 ,85 ,26 ))); // green
 		items.add(new Item(Material.WOOL, 14, new Color(179,49 ,44 ))); // red
 		items.add(new Item(Material.WOOL, 15, new Color(33 ,29 ,29 ))); // black
-		
+
 		items.add(new Item(Material.SANDSTONE, 0, new Color(239,230,185)));
 		items.add(new Item(Material.SANDSTONE, 0, new Color(196,160,119)));
 	}
-	
+
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){
 		Economy econ = plugin.getEcon();
 		Permission perm = plugin.getPerm();
 		Player player = event.getPlayer();
-		
+
 		World world = player.getWorld();
 		Block block = event.getClickedBlock();
-		
+
         ItemStack holding = player.getItemInHand();
-        
+
 		String playerName = PlayerToBuild.getPlayer(player);
-		
+
 		boolean currencyEnabled = true;
 		if(player.isOp() || (perm != null && perm.has(player, Perms.getBuild()))){
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.DIAMOND_BLOCK && holding.getType() == Material.WOOL){
-				
-				if (econ == null || perm.has(player,Perms.getIgnoreCost())){
+
+				if (econ == null || (perm != null && perm.has(player,Perms.getIgnoreCost()))){
 					currencyEnabled = false;
 				} else if (!econ.has(player.getName(), Config.getCost())){
             		player.sendMessage(ChatColor.RED + "Not enough money to create a statue. Need " + Config.getCost());
             		return;
             	}
-				
+
 				int direction = getDirection(player.getLocation(),block);
 				//player.sendMessage("Statue attempted with direction: " + direction);
-				URL url;
+
 				try {
-					url = new URL("http://s3.amazonaws.com/MinecraftSkins/"+playerName+".png");
+					URL url = new URL("http://s3.amazonaws.com/MinecraftSkins/"+playerName+".png");
 					URLConnection urlConnection = url.openConnection();
-		
+
 					BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
-					if (Config.isChatty()) { 
-						player.sendMessage("Downloading pixel data through redstone modem"); 
+					if (Config.isChatty()) {
+						player.sendMessage("Downloading pixel data through redstone modem");
 					}
 
+					// TODO: surely there's a better way to store this
 					int[][][] pixelData = null;
-					
+
 					BufferedImage img = ImageIO.read(in);
-					
+
 					in.close();
 					pixelData = new int[img.getWidth()][img.getHeight()][4];
 					int[] rgb;
-	
+
 					for(int i = 0; i < img.getHeight(); i++){
 						for (int j = 0; j < img.getWidth(); j++){
 							rgb = getPixelData(img, j, i);
-	
+
 							for(int k = 0; k < rgb.length; k++){
 								pixelData[j][i][k] = rgb[k];
-	
+
 							}
 						}
 					}
-					
-					if (Config.isChatty()) { 
+
+					if (Config.isChatty()) {
 						player.sendMessage("Creating pixel mapping matrix for woolBit color space");
-						player.sendMessage("Shearing sheep..."); 
+						player.sendMessage("Shearing sheep...");
 					}
 
 					createStatue(world,direction,block.getX(),block.getY(),block.getZ(),pixelData);
@@ -127,15 +130,15 @@ public class StPlayerInteract implements Listener{
                 	if (currencyEnabled){
                     	econ.withdrawPlayer(player.getName(), Config.getCost());
                     }
-                	
-					if (Config.isChatty()) { 
-						player.sendMessage("Boom! Look at that statue of "+playerName+"!"); 
+
+					if (Config.isChatty()) {
+						player.sendMessage("Boom! Look at that statue of "+playerName+"!");
 					}
-					
+
 				} catch(Exception e){
 					player.sendMessage("The skin for "+playerName+" was not found. Please check your cApiTAliZation & speeling.");
 				}
-				
+
 			}
 		}
 	}
@@ -160,7 +163,7 @@ public class StPlayerInteract implements Listener{
 	}
 
 	private void createStatue(World w,int dir,int wx, int wy, int wz,int[][][] pd) {
-		
+
 		ArrayList<StatueBlock> statueArray = new ArrayList<StatueBlock>();
 		// top/bottom arms
 		for (int y = 18; y >= 17; y--){
@@ -174,10 +177,10 @@ public class StPlayerInteract implements Listener{
 			for (int x = 49; x <= 50; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
 				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-23,wy+8,wz+x-48), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-11,wy+8,wz+x-48), item));			
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-11,wy+8,wz+x-48), item));
 			}
 		}
-		
+
 		// top/bottom head
 		for (int y = 7; y > 0; y--){
 			// top head
@@ -222,21 +225,21 @@ public class StPlayerInteract implements Listener{
 				statueArray.add(new StatueBlock(w.getBlockAt(wx-3,wy-y+31,wz+x), item));
 				statueArray.add(new StatueBlock(w.getBlockAt(wx+4,wy-y+31,wz+x), item));
 			}
-			
+
 			// legs front
 			for (int x = 4; x < 8; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
 				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-3,wy-y+31,wz), item));
 				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+4,wy-y+31,wz), item));
 			}
-			
+
 			// legs insides
 			for (int x = 9; x <= 10; x ++){
 				//Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
 				//statueArray.add(new StatueBlock(w.getBlockAt(wx-0,wy-y+31,wz+x-8), item));
 				//statueArray.add(new StatueBlock(w.getBlockAt(wx+1,wy-y+31,wz+x-8), item));
 			}
-			
+
 			// legs back
 			for (int x = 12; x <= 15; x ++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
@@ -253,13 +256,13 @@ public class StPlayerInteract implements Listener{
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
 				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-5,wy-y+39,wz+x-16), item));
 			}
-			
+
 			//body right
 			for (int x = 29; x <= 30; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
 				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+4,wy-y+39,wz+x-28), item));
 			}
-			
+
 			// body back
 			for(int x = 32; x <= 39; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
@@ -297,7 +300,7 @@ public class StPlayerInteract implements Listener{
 		} else if (dir == XGREATER){
 			rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_RIGHT);
 		}
-		
+
 		for (int i = 0; i < statueArray.size(); i ++){
 			Block block = statueArray.get(i).getBlock();
 			Item item = statueArray.get(i).getItem();
@@ -308,13 +311,14 @@ public class StPlayerInteract implements Listener{
 		}
 	}
 
+	// TODO: rotate by angle?
 	private void rotate(World w, Block start, ArrayList<StatueBlock> array, StatueDirection dir){
 		int size = array.size();
 		for (int i = 0; i < size; i ++){
 			Block block = array.get(i).getBlock();
 			int bx = block.getX() - start.getX();
 			int bz = block.getZ() - start.getZ();
-			
+
 			if (dir == StatueDirection.ROT_RIGHT){
 				array.get(i).setBlock(w.getBlockAt(block.getX()-bx-bz, block.getY(), block.getZ()-bz-bx+1));
 			} else if (dir == StatueDirection.ROT_LEFT){
@@ -337,13 +341,13 @@ public class StPlayerInteract implements Listener{
 		};
 		return rgb;
 	}
-	
+
 	private Item getItem(int r, int g, int b, int a){
 		int red,green,blue;
 		double tempDif;
 		//double rmean;
 		double weightR,weightG,weightB;
-		
+
 		double dif = 10000;
 		int val = 0;
 		for (int i = 0; i < items.size(); i++){
@@ -352,18 +356,18 @@ public class StPlayerInteract implements Listener{
 			red = temp.getRed()-r;
 			green = temp.getGreen()-g;
 			blue = temp.getBlue()-b;
-			
+
 		    weightR = 1; //2 + rmean/256;
 		    weightG = 1; //4.0;
 		    weightB = 1; //2 + (255-rmean)/256;
-		    
+
 			tempDif = Math.sqrt(weightR*red*red + weightG*green*green + weightB*blue*blue);
 			if (tempDif < dif){
 				dif = tempDif;
 				val = i;
 			}
 		}
-		
+
 		return items.get(val);
 	}
 	/*
