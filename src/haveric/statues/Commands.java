@@ -44,8 +44,8 @@ public class Commands implements CommandExecutor{
 					sender.sendMessage(msgColor + "With wool right click a diamond block to construct the statue");
 					sender.sendMessage("/" + cmdMain +" [name] (" + curColor + PlayerToBuild.getPlayer((Player)sender) + defColor + ") - " + msgColor + "Change the next statue built to [name]");
 				} else if (args.length == 1){
-					sender.sendMessage(msgColor+"With wool, right click a diamond block to construct "+highlightColor+args[1]+"'s"+msgColor+" statue");
-					PlayerToBuild.setPlayer((Player)sender, args[1]);
+					sender.sendMessage(msgColor+"With wool, right click a diamond block to construct "+highlightColor+args[0]+"'s"+msgColor+" statue");
+					PlayerToBuild.setPlayer((Player)sender, args[0]);
 				}
 			}
 		} else {

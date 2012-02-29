@@ -1,6 +1,6 @@
 name: Statues
 main: haveric.statues.Statues
-version: 0.2
+version: 0.3
 depend: [Vault]
 description: >
              Create statues

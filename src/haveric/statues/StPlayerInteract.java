@@ -1,6 +1,5 @@
 package haveric.statues;
 
-import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.net.URL;
@@ -34,33 +33,12 @@ public class StPlayerInteract implements Listener{
 
 	public static Statues plugin;
 
-	ArrayList<Item> items;
-
 	public StPlayerInteract(Statues st){
 		plugin = st;
 
-		// TODO: load from file
+		
 		// TODO: fix pink skin disease
-		items = new ArrayList<Item>();
-		items.add(new Item(Material.WOOL,  0, new Color(255,255,255))); // white
-		items.add(new Item(Material.WOOL,  1, new Color(235,136,68 ))); // orange
-		items.add(new Item(Material.WOOL,  2, new Color(198,93 ,208))); // magenta
-		items.add(new Item(Material.WOOL,  3, new Color(125,155,218))); // light blue
-		items.add(new Item(Material.WOOL,  4, new Color(214,200,33 ))); // yellow
-		items.add(new Item(Material.WOOL,  5, new Color(65 ,205,52 ))); // lime
-		items.add(new Item(Material.WOOL,  6, new Color(224,155,173))); // pink
-		items.add(new Item(Material.WOOL,  7, new Color(72 ,72 ,72 ))); // gray
-		items.add(new Item(Material.WOOL,  8, new Color(173,180,180))); // light gray
-		items.add(new Item(Material.WOOL,  9, new Color(43 ,127,162))); // cyan
-		items.add(new Item(Material.WOOL, 10, new Color(140,64 ,207))); // purple
-		items.add(new Item(Material.WOOL, 11, new Color(42 ,56 ,167))); // blue
-		items.add(new Item(Material.WOOL, 12, new Color(93 ,56 ,30 ))); // brown
-		items.add(new Item(Material.WOOL, 13, new Color(61 ,85 ,26 ))); // green
-		items.add(new Item(Material.WOOL, 14, new Color(179,49 ,44 ))); // red
-		items.add(new Item(Material.WOOL, 15, new Color(33 ,29 ,29 ))); // black
-
-		items.add(new Item(Material.SANDSTONE, 0, new Color(239,230,185)));
-		items.add(new Item(Material.SANDSTONE, 0, new Color(196,160,119)));
+		
 	}
 
 	@EventHandler
@@ -350,7 +328,9 @@ public class StPlayerInteract implements Listener{
 
 		double dif = 10000;
 		int val = 0;
-		for (int i = 0; i < items.size(); i++){
+		ArrayList<Item> items = ColorConfig.getListOfItems();
+		int size = items.size();
+		for (int i = 0; i < size; i++){
 			Item temp = items.get(i);
 			//rmean = (temp.getRed() + r)/2;
 			red = temp.getRed()-r;
@@ -370,25 +350,4 @@ public class StPlayerInteract implements Listener{
 
 		return items.get(val);
 	}
-	/*
-	 * RRR GGG BBB
-	 *   0   0   0  // black
-	 *  39  51 154  // blue
-	 *  86  51  28  // brown
-	 *  67  67  67  // gray
-	 *  56  77  24  // green
-	 * 164  45  41  // red
-	 * 129  54 196  // purple
-	 *  39 117 149  // cyan
-	 * 191  76 201  // pink
-	 * 104 139 212  // light blue?
-	 * 234 128  55  // orange
-	 * 217 131 155  // light red???
-	 *  59 189  48  // bright green
-	 * 158 166 166  // light gray
-	 * 194 181  28  // yellow
-	 * 222 222 222  // white
-	 *
-	 *
-	 */
 }

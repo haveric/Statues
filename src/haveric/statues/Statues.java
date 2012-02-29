@@ -13,7 +13,9 @@ public class Statues extends JavaPlugin{
 	public static final Logger log = Logger.getLogger("Minecraft");
 	private final StPlayerInteract playerInteract = new StPlayerInteract(this);
 	private Commands commands = new Commands(this);
-
+	
+    
+    
 	// Vault
 	private Economy econ;
 	private Permission perm;
@@ -25,10 +27,12 @@ public class Statues extends JavaPlugin{
 		pm.registerEvents(playerInteract, this);
 		
 		Config.init(this);
+		ColorConfig.init(this);
 		
 		setupVault();
         
         Config.setup();
+        ColorConfig.setup();
         
         getCommand(Commands.getMain()).setExecutor(commands);
         getCommand(Commands.getMainAlt()).setExecutor(commands);
