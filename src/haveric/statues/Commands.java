@@ -12,7 +12,6 @@ public class Commands implements CommandExecutor{
 
 	Statues plugin;
 
-
 	// Commands
 	public static String cmdMain    = "statue";
 	public static String cmdMainAlt = "statues";
@@ -23,8 +22,6 @@ public class Commands implements CommandExecutor{
 		plugin = st;
 	}
 
-
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
 		Permission perm = plugin.getPerm();
@@ -33,7 +30,7 @@ public class Commands implements CommandExecutor{
 		ChatColor curColor = ChatColor.GOLD;
 		ChatColor defColor = ChatColor.WHITE;
 
-		String title = msgColor + "[" + ChatColor.GRAY + "Statues" + msgColor + "] ";
+		String title = msgColor + "[" + ChatColor.GRAY + plugin.getDescription().getName() + msgColor + "] ";
 
 
 		if(sender.isOp() || (perm != null && perm.has((Player)sender, Perms.getBuild()))){
@@ -77,5 +74,4 @@ public class Commands implements CommandExecutor{
 	public static void setHelp(String cmd) {
 		cmdHelp = cmd;
 	}
-
 }

@@ -18,8 +18,8 @@ public class Config {
     private static String cfgCost = "Cost to create";
 	
 	// Defaults
-	public static double COST_DEFAULT = 10000.0;
-	public static boolean CHATTY_DEFAULT = false;
+	public static final double COST_DEFAULT = 10000.0;
+	public static final boolean CHATTY_DEFAULT = false;
 	
 	public static void init(Statues st){
 		plugin = st;

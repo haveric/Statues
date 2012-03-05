@@ -2,12 +2,11 @@ name: Statues
 main: haveric.statues.Statues
 version: 0.3
 depend: [Vault]
+author: haveric
 description: >
              Create statues
 commands:
     statues:
-        description: Create statues
-        usage:
-    statue:
+    	aliases: [statue]
         description: Create statues
         usage:
