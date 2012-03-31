@@ -34,11 +34,7 @@ public class StPlayerInteract implements Listener{
 	public static Statues plugin;
 
 	public StPlayerInteract(Statues st){
-		plugin = st;
-
-		
-		// TODO: fix pink skin disease
-		
+		plugin = st;	
 	}
 
 	@EventHandler
@@ -148,14 +144,14 @@ public class StPlayerInteract implements Listener{
 			// top arm
 			for (int x = 45; x <= 46; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-23,wy+19,wz+x-44), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-11,wy+19,wz+x-44), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-23,wy+23,wz+x-44), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-11,wy+23,wz+x-44), item));
 			}
 			// bottom arm
 			for (int x = 49; x <= 50; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-23,wy+8,wz+x-48), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-11,wy+8,wz+x-48), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-23,wy+12,wz+x-48), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-11,wy+12,wz+x-48), item));
 			}
 		}
 
@@ -164,12 +160,12 @@ public class StPlayerInteract implements Listener{
 			// top head
 			for (int x = 9; x <= 14; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-3,wy+27,wz+x-10), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+12,wy+31,wz+y-2), item));
 			}
 			// bottom head
 			for (int x = 17; x <= 22; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-3,wy+20,wz+x-18), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+20,wy+24,wz+y-2), item));
 			}
 		}
 		// main head
@@ -177,22 +173,22 @@ public class StPlayerInteract implements Listener{
 			// head right side
 			for (int x = 1; x <=6; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+4,wy-y+35,wz+x-2), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+4,wy-y+39,wz-x+5), item));
 			}
 			// head front
 			for (int x = 8; x <=15; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-7-4,wy-y+35,wz-2), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+8+4,wy-y+39,wz-2), item));
 			}
 			// head left side
 			for (int x = 17; x <= 22; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-4,wy-y+35,wz+x-18), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-4,wy-y+39,wz+x-18), item));
 			}
 			// head back
 			for (int x = 24; x <= 31; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-23-4,wy-y+35,wz+5), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-23-4,wy-y+39,wz+5), item));
 			}
 		}
 		// bottom row of 12 pixels tall
@@ -207,8 +203,8 @@ public class StPlayerInteract implements Listener{
 			// legs front
 			for (int x = 4; x < 8; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-3,wy-y+31,wz), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+4,wy-y+31,wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-7,wy-y+31,wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+8,wy-y+31,wz), item));
 			}
 
 			// legs insides
@@ -227,65 +223,68 @@ public class StPlayerInteract implements Listener{
 			// body front
 			for(int x = 20; x <= 27; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-19-4,wy-y+39,wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+28-4,wy-y+43,wz), item));
 			}
 			// body left
 			for (int x = 17; x <= 18; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-5,wy-y+39,wz+x-16), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-5,wy-y+43,wz+x-16), item));
 			}
 
 			//body right
 			for (int x = 29; x <= 30; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+4,wy-y+39,wz+x-28), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+4,wy-y+43,wz+x-28), item));
 			}
 
 			// body back
 			for(int x = 32; x <= 39; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-31-4,wy-y+39,wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-31-4,wy-y+43,wz+3), item));
 			}
 			// arms inside
 			for (int x=49; x<=50; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-5,wy-y+39,wz+x-48), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+5,wy-y+39,wz+x-48), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-5,wy-y+43,wz+x-48), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+5,wy-y+43,wz+x-48), item));
 			}
 			// arms outside
 			for (int x=41; x<=42; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-8,wy-y+39,wz+x-40), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+8,wy-y+39,wz+x-40), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-8,wy-y+43,wz+x-40), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+8,wy-y+43,wz+x-40), item));
 			}
 			// arms front
 			for(int x=44; x <= 47; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-43-8,wy-y+39,wz), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+44+8,wy-y+39,wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-43-8,wy-y+43,wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+44+8,wy-y+43,wz), item));
 			}
 			//arms back
 			for (int x=52; x<=55; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51-8,wy-y+39,wz+3), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52+8,wy-y+39,wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51-8,wy-y+43,wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52+8,wy-y+43,wz+3), item));
 			}
 		}
 		if (dir == ZGREATER){
-			rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_ONEEIGHTY);
+			//rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_ONEEIGHTY);
+			rotateAngle(w, w.getBlockAt(wx,wy,wz),statueArray, 180);
 		} else if (dir == XLESS){
-			rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_LEFT);
+			//rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_LEFT);
+			rotateAngle(w, w.getBlockAt(wx,wy,wz),statueArray, -90);
 		} else if (dir == XGREATER){
-			rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_RIGHT);
+			//rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_RIGHT);
+			rotateAngle(w, w.getBlockAt(wx,wy,wz),statueArray, 90);
 		}
 
 		for (int i = 0; i < statueArray.size(); i ++){
 			Block block = statueArray.get(i).getBlock();
 			Item item = statueArray.get(i).getItem();
-			if (block.getType() == Material.AIR){
+			//if (block.getType() == Material.AIR){ // TODO: uncomment after testing
 				block.setType(item.getMaterial());
 				block.setData((byte)item.getData());
-			}
+			//}
 		}
 	}
 
@@ -307,6 +306,29 @@ public class StPlayerInteract implements Listener{
 		}
 	}
 
+	
+	private void rotateAngle(World w, Block start, ArrayList<StatueBlock> array, int degrees){
+		double rads = Math.toRadians(degrees);
+		double cosDeg = Math.cos(rads);
+		double sinDeg = Math.sin(rads);
+		
+		int h = start.getX();
+		int k = start.getZ();
+		double xConst = h - h*cosDeg + k*sinDeg;
+		double yConst = k - k*cosDeg - h*sinDeg;
+		
+		for (int i = 0, size = array.size(); i < size; i++) {
+			Block block = array.get(i).getBlock();
+			int x = block.getX();
+			int z = block.getZ();
+			
+			int newX = (int) (xConst + x*cosDeg - z*sinDeg - 0.5);
+			int newZ = (int) (yConst + z*cosDeg + x*sinDeg - 0.5);
+
+			array.get(i).setBlock(w.getBlockAt(newX, block.getY(), newZ));
+		}
+	}
+	
 	private static int[] getPixelData(BufferedImage img, int x, int y){
 
 		int argb = img.getRGB(x, y);

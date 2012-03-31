@@ -7,6 +7,6 @@ description: >
              Create statues
 commands:
     statues:
-    	aliases: [statue]
+        aliases: [statue]
         description: Create statues
         usage:
