@@ -144,14 +144,14 @@ public class StPlayerInteract implements Listener{
 			// top arm
 			for (int x = 45; x <= 46; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-23,wy+23,wz+x-44), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-11,wy+23,wz+x-44), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51,wy+23,wz+y-16), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52,wy+23,wz+y-16), item));
 			}
 			// bottom arm
 			for (int x = 49; x <= 50; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-23,wy+12,wz+x-48), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+y-11,wy+12,wz+x-48), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-55,wy+12,wz+y-16), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+56,wy+12,wz+y-16), item));
 			}
 		}
 
@@ -196,8 +196,8 @@ public class StPlayerInteract implements Listener{
 			// legs sides
 			for (int x = 1; x <= 2; x ++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-3,wy-y+31,wz+x), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+4,wy-y+31,wz+x), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-3,wy-y+31,wz-x+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+4,wy-y+31,wz-x+3), item));
 			}
 
 			// legs front
@@ -251,8 +251,8 @@ public class StPlayerInteract implements Listener{
 			// arms outside
 			for (int x=41; x<=42; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-8,wy-y+43,wz+x-40), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+8,wy-y+43,wz+x-40), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-8,wy-y+43,wz-x+43), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+8,wy-y+43,wz-x+43), item));
 			}
 			// arms front
 			for(int x=44; x <= 47; x++){
@@ -263,8 +263,8 @@ public class StPlayerInteract implements Listener{
 			//arms back
 			for (int x=52; x<=55; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51-8,wy-y+43,wz+3), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52+8,wy-y+43,wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51+4,wy-y+43,wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52-4,wy-y+43,wz+3), item));
 			}
 		}
 		if (dir == ZGREATER){
@@ -323,7 +323,7 @@ public class StPlayerInteract implements Listener{
 			int z = block.getZ();
 			
 			int newX = (int) (xConst + x*cosDeg - z*sinDeg - 0.5);
-			int newZ = (int) (yConst + z*cosDeg + x*sinDeg - 0.5);
+			int newZ = (int) (yConst + z*cosDeg + x*sinDeg + 0.5);
 
 			array.get(i).setBlock(w.getBlockAt(newX, block.getY(), newZ));
 		}
