@@ -144,8 +144,8 @@ public class StPlayerInteract implements Listener{
 			// top arm
 			for (int x = 45; x <= 46; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51,wy+23,wz+y-16), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52,wy+23,wz+y-16), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51,wy+23,wz-y+19), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52,wy+23,wz-y+19), item));
 			}
 			// bottom arm
 			for (int x = 49; x <= 50; x++){
@@ -160,7 +160,7 @@ public class StPlayerInteract implements Listener{
 			// top head
 			for (int x = 9; x <= 14; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+12,wy+31,wz+y-2), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+12,wy+31,wz-y+5), item));
 			}
 			// bottom head
 			for (int x = 17; x <= 22; x++){
