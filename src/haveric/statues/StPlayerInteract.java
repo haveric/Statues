@@ -23,14 +23,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class StPlayerInteract implements Listener{
-	int NONE = 0;
-	int XGREATER = 1;
-	int XLESS = 2;
-	int ZGREATER = 3;
-	int ZLESS = 4;
 
-	public enum StatueDirection {ROT_LEFT, ROT_RIGHT, ROT_ONEEIGHTY, SHIFT_LEFT, SHIFT_RIGHT};
-
+	enum Direction {NONE, NORTH, EAST, SOUTH, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST};
 	public static Statues plugin;
 
 	public StPlayerInteract(Statues st){
@@ -61,7 +55,7 @@ public class StPlayerInteract implements Listener{
             		return;
             	}
 
-				int direction = getDirection(player.getLocation(),block);
+				Direction direction = getCardinalDirection(player);
 				//player.sendMessage("Statue attempted with direction: " + direction);
 
 				try {
@@ -116,42 +110,24 @@ public class StPlayerInteract implements Listener{
 			}
 		}
 	}
-	private int getDirection(Location location, Block block) {
-			int dir = NONE;
-		if (location.getBlockX() == block.getX()){
-			if (location.getBlockZ() > block.getZ()){
-				dir = ZGREATER;
-			} else if (location.getBlockZ() < block.getZ()){
-				dir = ZLESS;
-			} else {
-				// standing on block;
-			}
-		} else if (location.getBlockZ() == block.getZ()){
-			if (location.getBlockX() > block.getX()){
-				dir = XGREATER;
-			} else { // locationX < blockX
-				dir = XLESS;
-			}
-		}
-		return dir;
-	}
 
-	private void createStatue(World w,int dir,int wx, int wy, int wz,int[][][] pd) {
+	private void createStatue(World w,Direction direction,int wx, int wy, int wz,int[][][] pd) {
 
 		ArrayList<StatueBlock> statueArray = new ArrayList<StatueBlock>();
+		
 		// top/bottom arms
 		for (int y = 18; y >= 17; y--){
 			// top arm
 			for (int x = 45; x <= 46; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51,wy+23,wz-y+19), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52,wy+23,wz-y+19), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51, wy+23, wz-y+19), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52, wy+23, wz-y+19), item));
 			}
 			// bottom arm
 			for (int x = 49; x <= 50; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-55,wy+12,wz+y-16), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+56,wy+12,wz+y-16), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-55, wy+12, wz+y-16), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+56, wy+12, wz+y-16), item));
 			}
 		}
 
@@ -160,12 +136,12 @@ public class StPlayerInteract implements Listener{
 			// top head
 			for (int x = 9; x <= 14; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+12,wy+31,wz-y+5), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+12, wy+31, wz-y+5), item));
 			}
 			// bottom head
 			for (int x = 17; x <= 22; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+20,wy+24,wz+y-2), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+20, wy+24, wz+y-2), item));
 			}
 		}
 		// main head
@@ -173,22 +149,22 @@ public class StPlayerInteract implements Listener{
 			// head right side
 			for (int x = 1; x <=6; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+4,wy-y+39,wz-x+5), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+4, wy-y+39, wz-x+5), item));
 			}
 			// head front
 			for (int x = 8; x <=15; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+8+4,wy-y+39,wz-2), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+12, wy-y+39, wz-2), item));
 			}
 			// head left side
 			for (int x = 17; x <= 22; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-4,wy-y+39,wz+x-18), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-3, wy-y+39, wz+x-18), item));
 			}
 			// head back
 			for (int x = 24; x <= 31; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-23-4,wy-y+39,wz+5), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-27, wy-y+39, wz+5), item));
 			}
 		}
 		// bottom row of 12 pixels tall
@@ -196,15 +172,15 @@ public class StPlayerInteract implements Listener{
 			// legs sides
 			for (int x = 1; x <= 2; x ++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-3,wy-y+31,wz-x+3), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+4,wy-y+31,wz-x+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-3, wy-y+31, wz-x+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+4, wy-y+31, wz-x+3), item));
 			}
 
 			// legs front
 			for (int x = 4; x < 8; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-7,wy-y+31,wz), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+8,wy-y+31,wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-7, wy-y+31, wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+8, wy-y+31, wz), item));
 			}
 
 			// legs insides
@@ -217,95 +193,81 @@ public class StPlayerInteract implements Listener{
 			// legs back
 			for (int x = 12; x <= 15; x ++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-11,wy-y+31,wz+3), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+12,wy-y+31,wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-11, wy-y+31, wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+12, wy-y+31, wz+3), item));
 			}
 			// body front
 			for(int x = 20; x <= 27; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+28-4,wy-y+43,wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+24, wy-y+43, wz), item));
 			}
 			// body left
 			for (int x = 17; x <= 18; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-5,wy-y+43,wz+x-16), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-4, wy-y+43, wz+x-16), item));
 			}
 
 			//body right
 			for (int x = 29; x <= 30; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+4,wy-y+43,wz+x-28), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+4, wy-y+43, wz+x-28), item));
 			}
 
 			// body back
 			for(int x = 32; x <= 39; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-31-4,wy-y+43,wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-35, wy-y+43, wz+3), item));
 			}
 			// arms inside
 			for (int x=49; x<=50; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-5,wy-y+43,wz+x-48), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+5,wy-y+43,wz+x-48), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-4, wy-y+43 ,wz+x-48), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+5, wy-y+43, wz+x-48), item));
 			}
 			// arms outside
 			for (int x=41; x<=42; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+1-8,wy-y+43,wz-x+43), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+0+8,wy-y+43,wz-x+43), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-7, wy-y+43, wz-x+43), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+8, wy-y+43, wz-x+43), item));
 			}
 			// arms front
 			for(int x=44; x <= 47; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-43-8,wy-y+43,wz), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+44+8,wy-y+43,wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51, wy-y+43, wz), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52, wy-y+43, wz), item));
 			}
 			//arms back
 			for (int x=52; x<=55; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-51+4,wy-y+43,wz+3), item));
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52-4,wy-y+43,wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-47, wy-y+43, wz+3), item));
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+48, wy-y+43, wz+3), item));
 			}
 		}
-		if (dir == ZGREATER){
-			//rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_ONEEIGHTY);
+		if (direction == Direction.SOUTH){
 			rotateAngle(w, w.getBlockAt(wx,wy,wz),statueArray, 180);
-		} else if (dir == XLESS){
-			//rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_LEFT);
+		} else if (direction == Direction.WEST){
 			rotateAngle(w, w.getBlockAt(wx,wy,wz),statueArray, -90);
-		} else if (dir == XGREATER){
-			//rotate(w, w.getBlockAt(wx,wy,wz),statueArray, StatueDirection.ROT_RIGHT);
+		} else if (direction == Direction.EAST){
 			rotateAngle(w, w.getBlockAt(wx,wy,wz),statueArray, 90);
+		} else if (direction == Direction.SOUTHEAST){
+			rotateAngle(w, w.getBlockAt(wx,wy,wz), statueArray, 135);
+		} else if (direction == Direction.SOUTHWEST){
+			rotateAngle(w, w.getBlockAt(wx,wy,wz), statueArray, -135);
+		} else if (direction == Direction.NORTHEAST){
+			rotateAngle(w, w.getBlockAt(wx,wy,wz), statueArray, 45);
+		} else if (direction == Direction.NORTHWEST){
+			rotateAngle(w, w.getBlockAt(wx,wy,wz), statueArray, -45);
 		}
 
 		for (int i = 0; i < statueArray.size(); i ++){
 			Block block = statueArray.get(i).getBlock();
 			Item item = statueArray.get(i).getItem();
-			//if (block.getType() == Material.AIR){ // TODO: uncomment after testing
+			if (block.getType() == Material.AIR){
 				block.setType(item.getMaterial());
 				block.setData((byte)item.getData());
-			//}
-		}
-	}
-
-	// TODO: rotate by angle?
-	private void rotate(World w, Block start, ArrayList<StatueBlock> array, StatueDirection dir){
-		int size = array.size();
-		for (int i = 0; i < size; i ++){
-			Block block = array.get(i).getBlock();
-			int bx = block.getX() - start.getX();
-			int bz = block.getZ() - start.getZ();
-
-			if (dir == StatueDirection.ROT_RIGHT){
-				array.get(i).setBlock(w.getBlockAt(block.getX()-bx-bz, block.getY(), block.getZ()-bz-bx+1));
-			} else if (dir == StatueDirection.ROT_LEFT){
-				array.get(i).setBlock(w.getBlockAt(block.getX()-bx+bz, block.getY(), block.getZ()-bz-bx));
-			} else if (dir == StatueDirection.ROT_ONEEIGHTY){
-				array.get(i).setBlock(w.getBlockAt(block.getX()-bx-bx, block.getY(), block.getZ()-bz-bz));
 			}
 		}
 	}
-
 	
 	private void rotateAngle(World w, Block start, ArrayList<StatueBlock> array, int degrees){
 		double rads = Math.toRadians(degrees);
@@ -372,4 +334,49 @@ public class StPlayerInteract implements Listener{
 
 		return items.get(val);
 	}
+	
+	/**
+     * Get the cardinal compass direction of a player.
+     * 
+     * @param player
+     * @return
+     */
+    public static Direction getCardinalDirection(Player player) {
+        double rot = (player.getLocation().getYaw() - 90) % 360;
+        if (rot < 0) {
+            rot += 360.0;
+        }
+        return getDirection(rot);
+    }
+
+    /**
+     * Converts a rotation to a cardinal direction name.
+     * 
+     * @param rot
+     * @return
+     */
+    private static Direction getDirection(double rot) {
+    	Direction dir = Direction.NONE;
+        
+        if (0 <= rot && rot < 22.5){
+        	dir = Direction.EAST;
+        } else if (22.5 <= rot && rot < 67.5){
+        	dir = Direction.SOUTHEAST;
+        } else if (67.5 <= rot && rot < 112.5){
+        	dir = Direction.SOUTH;
+        } else if (112.5 <= rot && rot < 157.5){
+        	dir = Direction.SOUTHWEST;
+        } else if (157.5 <= rot && rot < 202.5){
+        	dir = Direction.WEST;
+        } else if (202.5 <= rot && rot < 247.5){
+        	dir = Direction.NORTHWEST;
+        } else if (247.5 <= rot && rot < 292.5){
+        	dir = Direction.NORTH;
+        } else if (292.5 <= rot && rot < 337.5){
+        	dir = Direction.NORTHEAST;
+        } else if (337.5 <= rot && rot < 360){
+        	dir = Direction.EAST;
+        }
+        return dir;
+    }
 }
