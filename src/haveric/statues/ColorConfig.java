@@ -16,7 +16,7 @@ public class ColorConfig {
 	
 	private static File defaultColors;
     private static File customColors;
-    private static final int COLORS_VERSION = 1;
+    private static final int COLORS_VERSION = 2;
     private static ArrayList<Item> listOfItems;
     
     public static void init(Statues st){
@@ -145,6 +145,7 @@ public class ColorConfig {
 			out.println("WOOL 10 140 64 207"); //purple
 			out.println("# blue");
 			out.println("WOOL 11 42 56 167"); //blue
+			out.println("WOOL 11 42 50  84");
 			out.println("# brown");
 			out.println("WOOL 12 93 56 30"); //brown
 			out.println("# green");
@@ -153,6 +154,7 @@ public class ColorConfig {
 			out.println("WOOL 14 179 49 44"); //red
 			out.println("# black");
 			out.println("WOOL 15 33 29 29"); //black
+			out.println("WOOL 15  0  0  0");
 			out.println("# skin");
 			out.println("SANDSTONE 0 239 230 185"); 
 			out.println("SANDSTONE 0 196 160 119");

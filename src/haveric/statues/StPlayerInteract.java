@@ -1,5 +1,6 @@
 package haveric.statues;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.net.URL;
@@ -11,7 +12,6 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -105,6 +105,7 @@ public class StPlayerInteract implements Listener{
 
 				} catch(Exception e){
 					player.sendMessage("The skin for "+playerName+" was not found. Please check your cApiTAliZation & speeling.");
+					e.printStackTrace();
 				}
 
 			}
@@ -143,6 +144,16 @@ public class StPlayerInteract implements Listener{
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
 				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+20, wy+24, wz+y-2), item));
 			}
+			
+			// top hat
+			for (int x = 40; x <= 47; x++){
+				
+			}
+			
+			// bottom hat
+			for (int x = 48; x <= 55; x++){
+				
+			}
 		}
 		// main head
 		for (int y = 15; y > 7; y--){
@@ -165,6 +176,29 @@ public class StPlayerInteract implements Listener{
 			for (int x = 24; x <= 31; x++){
 				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
 				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-27, wy-y+39, wz+5), item));
+			}
+			
+			// hat right side
+			for (int x = 32; x <= 39; x++){
+				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+5, wy-y+39, wz-x+37), item));
+			}
+			
+			// hat front
+			for (int x = 40; x <= 47; x++){
+				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+44, wy-y+39, wz-3), item));
+			}
+			
+			// hat left side
+			for (int x = 48; x <= 55; x++){
+				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-4, wy-y+39, wz+x-50), item));
+			}
+			
+			// hat back
+			for (int x = 56; x <= 63; x++){
+				
 			}
 		}
 		// bottom row of 12 pixels tall
@@ -305,34 +339,39 @@ public class StPlayerInteract implements Listener{
 	}
 
 	private Item getItem(int r, int g, int b, int a){
-		int red,green,blue;
-		double tempDif;
-		//double rmean;
-		double weightR,weightG,weightB;
-
-		double dif = 10000;
-		int val = 0;
-		ArrayList<Item> items = ColorConfig.getListOfItems();
-		int size = items.size();
-		for (int i = 0; i < size; i++){
-			Item temp = items.get(i);
-			//rmean = (temp.getRed() + r)/2;
-			red = temp.getRed()-r;
-			green = temp.getGreen()-g;
-			blue = temp.getBlue()-b;
-
-		    weightR = 1; //2 + rmean/256;
-		    weightG = 1; //4.0;
-		    weightB = 1; //2 + (255-rmean)/256;
-
-			tempDif = Math.sqrt(weightR*red*red + weightG*green*green + weightB*blue*blue);
-			if (tempDif < dif){
-				dif = tempDif;
-				val = i;
+		if (a == 0){
+			return new Item(Material.AIR, 0, new Color(0,0,0));
+		} else {
+			int red,green,blue;
+			double tempDif;
+			//double rmean;
+			double weightR,weightG,weightB;
+	
+			double dif = 10000;
+			int val = 0;
+			ArrayList<Item> items = ColorConfig.getListOfItems();
+			int size = items.size();
+			for (int i = 0; i < size; i++){
+				Item temp = items.get(i);
+				//rmean = (temp.getRed() + r)/2;
+				red = temp.getRed()-r;
+				green = temp.getGreen()-g;
+				blue = temp.getBlue()-b;
+	
+			    weightR = 1; //2 + rmean/256;
+			    weightG = 1; //4.0;
+			    weightB = 1; //2 + (255-rmean)/256;
+	
+				tempDif = Math.sqrt(weightR*red*red + weightG*green*green + weightB*blue*blue);
+				if (tempDif < dif){
+					dif = tempDif;
+					val = i;
+				}
 			}
+			return items.get(val);
 		}
 
-		return items.get(val);
+		
 	}
 	
 	/**
