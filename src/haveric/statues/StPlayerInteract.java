@@ -40,7 +40,7 @@ public class StPlayerInteract implements Listener{
 		World world = player.getWorld();
 		Block block = event.getClickedBlock();
 
-        ItemStack holding = player.getItemInHand();
+		ItemStack holding = player.getItemInHand();
 
 		String playerName = PlayerToBuild.getPlayer(player);
 
@@ -51,9 +51,9 @@ public class StPlayerInteract implements Listener{
 				if (econ == null || (perm != null && perm.has(player,Perms.getIgnoreCost()))){
 					currencyEnabled = false;
 				} else if (!econ.has(player.getName(), Config.getCost())){
-            		player.sendMessage(ChatColor.RED + "Not enough money to create a statue. Need " + Config.getCost());
-            		return;
-            	}
+					player.sendMessage(ChatColor.RED + "Not enough money to create a statue. Need " + Config.getCost());
+					return;
+				}
 
 				Direction direction = getCardinalDirection(player);
 				//player.sendMessage("Statue attempted with direction: " + direction);
@@ -69,7 +69,7 @@ public class StPlayerInteract implements Listener{
 					}
 
 					// TODO: surely there's a better way to store this
-					int[][][] pixelData = null;
+					int[][][] pixelData;
 
 					BufferedImage img = ImageIO.read(in);
 
@@ -83,7 +83,6 @@ public class StPlayerInteract implements Listener{
 
 							for(int k = 0; k < rgb.length; k++){
 								pixelData[j][i][k] = rgb[k];
-
 							}
 						}
 					}
@@ -95,9 +94,9 @@ public class StPlayerInteract implements Listener{
 
 					createStatue(world,direction,block.getX(),block.getY(),block.getZ(),pixelData);
 
-                	if (currencyEnabled){
-                    	econ.withdrawPlayer(player.getName(), Config.getCost());
-                    }
+					if (currencyEnabled){
+						econ.withdrawPlayer(player.getName(), Config.getCost());
+					}
 
 					if (Config.isChatty()) {
 						player.sendMessage("Boom! Look at that statue of "+playerName+"!");
@@ -105,9 +104,7 @@ public class StPlayerInteract implements Listener{
 
 				} catch(Exception e){
 					player.sendMessage("The skin for "+playerName+" was not found. Please check your cApiTAliZation & speeling.");
-					e.printStackTrace();
 				}
-
 			}
 		}
 	}
@@ -133,26 +130,29 @@ public class StPlayerInteract implements Listener{
 		}
 
 		// top/bottom head
-		for (int y = 7; y > 0; y--){
+		for (int y = 7; y >= 0; y--){
 			// top head
-			for (int x = 9; x <= 14; x++){
-				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+12, wy+31, wz-y+5), item));
+			if (y < 7 && y > 0){
+				for (int x = 9; x <= 14; x++){
+					Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
+					statueArray.add(new StatueBlock(w.getBlockAt(wx-x+12, wy+31, wz-y+5), item));
+				}
+				// bottom head
+				for (int x = 17; x <= 22; x++){
+					Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
+					statueArray.add(new StatueBlock(w.getBlockAt(wx-x+20, wy+24, wz+y-2), item));
+				}
 			}
-			// bottom head
-			for (int x = 17; x <= 22; x++){
-				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
-				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+20, wy+24, wz+y-2), item));
-			}
-			
 			// top hat
 			for (int x = 40; x <= 47; x++){
-				
+				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+44, wy+32, wz-y+5), item));
 			}
 			
 			// bottom hat
 			for (int x = 48; x <= 55; x++){
-				
+				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
+				statueArray.add(new StatueBlock(w.getBlockAt(wx-x+52, wy+23, wz+y-2), item));
 			}
 		}
 		// main head
@@ -198,7 +198,8 @@ public class StPlayerInteract implements Listener{
 			
 			// hat back
 			for (int x = 56; x <= 63; x++){
-				
+				Item item = getItem(pd[x][y][0],pd[x][y][1],pd[x][y][2],pd[x][y][3]);
+				statueArray.add(new StatueBlock(w.getBlockAt(wx+x-59, wy-y+39, wz+6), item));
 			}
 		}
 		// bottom row of 12 pixels tall
