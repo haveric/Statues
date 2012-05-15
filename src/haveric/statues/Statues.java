@@ -30,19 +30,18 @@ public class Statues extends JavaPlugin{
 		ColorConfig.init(this);
 		
 		setupVault();
-        
-        Config.setup();
-        ColorConfig.setup();
-        
-        getCommand(Commands.getMain()).setExecutor(commands);
-        getCommand(Commands.getMainAlt()).setExecutor(commands);
-        
-        log.info(String.format("[%s] v%s Started",getDescription().getName(), getDescription().getVersion()));
+
+		Config.setup();
+		ColorConfig.setup();
+
+		getCommand(Commands.getMain()).setExecutor(commands);
+		getCommand(Commands.getMainAlt()).setExecutor(commands);
+
 	}
 	
 	@Override
 	public void onDisable() {
-		log.info(String.format("[%s] Disabled",getDescription().getName()));
+
 	}
 	
     public void setupVault() {       
