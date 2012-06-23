@@ -239,7 +239,7 @@ public class StPlayerInteract implements Listener {
             // body left
             for (int x = 17; x <= 18; x++) {
                 Item item = getItem(pd[x][y][0], pd[x][y][1], pd[x][y][2], pd[x][y][3]);
-                statueArray.add(new StatueBlock(w.getBlockAt(wx-4, wy-y+43, wz+x-16), item));
+                statueArray.add(new StatueBlock(w.getBlockAt(wx-3, wy-y+43, wz+x-16), item));
             }
 
             //body right
