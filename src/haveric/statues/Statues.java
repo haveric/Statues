@@ -9,42 +9,41 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Statues extends JavaPlugin{
-	public static final Logger log = Logger.getLogger("Minecraft");
-	private final StPlayerInteract playerInteract = new StPlayerInteract(this);
-	private Commands commands = new Commands(this);
-	
-    
-    
-	// Vault
-	private Economy econ;
-	private Permission perm;
-	
+public class Statues extends JavaPlugin {
+    public static final Logger log = Logger.getLogger("Minecraft");
+    private final StPlayerInteract playerInteract = new StPlayerInteract(this);
+    private Commands commands = new Commands(this);
 
-	@Override
-	public void onEnable() {		
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(playerInteract, this);
-		
-		Config.init(this);
-		ColorConfig.init(this);
-		
-		setupVault();
 
-		Config.setup();
-		ColorConfig.setup();
+    // Vault
+    private Economy econ;
+    private Permission perm;
 
-		getCommand(Commands.getMain()).setExecutor(commands);
-		getCommand(Commands.getMainAlt()).setExecutor(commands);
 
-	}
-	
-	@Override
-	public void onDisable() {
+    @Override
+    public void onEnable() {
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(playerInteract, this);
 
-	}
-	
-    public void setupVault() {       
+        Config.init(this);
+        ColorConfig.init(this);
+
+        setupVault();
+
+        Config.setup();
+        ColorConfig.setup();
+
+        getCommand(Commands.getMain()).setExecutor(commands);
+        getCommand(Commands.getMainAlt()).setExecutor(commands);
+
+    }
+
+    @Override
+    public void onDisable() {
+
+    }
+
+    public void setupVault() {
         RegisteredServiceProvider<Permission> permProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permProvider != null) {
             perm = permProvider.getProvider();
@@ -55,13 +54,12 @@ public class Statues extends JavaPlugin{
             econ = econProvider.getProvider();
         }
     }
-    
-	
-    public Permission getPerm(){
-    	return perm;
+
+    public Permission getPerm() {
+        return perm;
     }
-    
-    public Economy getEcon(){
-    	return econ;
+
+    public Economy getEcon() {
+        return econ;
     }
 }

@@ -8,70 +8,70 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Commands implements CommandExecutor{
+public class Commands implements CommandExecutor {
 
-	Statues plugin;
+    private static Statues plugin;
 
-	// Commands
-	public static String cmdMain    = "statue";
-	public static String cmdMainAlt = "statues";
+    // Commands
+    private static String cmdMain    = "statue";
+    private static String cmdMainAlt = "statues";
 
-	public static String cmdHelp = "help";
+    private static String cmdHelp = "help";
 
-	public Commands(Statues st) {
-		plugin = st;
-	}
+    public Commands(Statues st) {
+        plugin = st;
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-		Permission perm = plugin.getPerm();
-		ChatColor msgColor = ChatColor.DARK_AQUA;
-		ChatColor highlightColor = ChatColor.YELLOW;
-		ChatColor curColor = ChatColor.GOLD;
-		ChatColor defColor = ChatColor.WHITE;
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+        Permission perm = plugin.getPerm();
+        ChatColor msgColor = ChatColor.DARK_AQUA;
+        ChatColor highlightColor = ChatColor.YELLOW;
+        ChatColor curColor = ChatColor.GOLD;
+        ChatColor defColor = ChatColor.WHITE;
 
-		String title = msgColor + "[" + ChatColor.GRAY + plugin.getDescription().getName() + msgColor + "] ";
+        String title = msgColor + "[" + ChatColor.GRAY + plugin.getDescription().getName() + msgColor + "] ";
 
 
-		if(sender.isOp() || (perm != null && perm.has((Player)sender, Perms.getBuild()))){
-			if (commandLabel.equalsIgnoreCase(cmdMain) || commandLabel.equalsIgnoreCase(cmdMainAlt)){
+        if (sender.isOp() || (perm != null && perm.has((Player) sender, Perms.getBuild()))) {
+            if (commandLabel.equalsIgnoreCase(cmdMain) || commandLabel.equalsIgnoreCase(cmdMainAlt)) {
 
-				if(args.length == 0 || (args.length == 1 && args[0].equalsIgnoreCase(cmdHelp))){
-					sender.sendMessage(title+"github.com/haveric/statues - v" + plugin.getDescription().getVersion());
-					sender.sendMessage(msgColor + "With wool right click a diamond block to construct the statue");
-					sender.sendMessage("/" + cmdMain +" [name] (" + curColor + PlayerToBuild.getPlayer((Player)sender) + defColor + ") - " + msgColor + "Change the next statue built to [name]");
-				} else if (args.length == 1){
-					sender.sendMessage(msgColor+"With wool, right click a diamond block to construct "+highlightColor+args[0]+"'s"+msgColor+" statue");
-					PlayerToBuild.setPlayer((Player)sender, args[0]);
-				}
-			}
-		} else {
-			sender.sendMessage(title+" You do not have access to this command.");
-		}
-		return false;
-	}
+                if (args.length == 0 || (args.length == 1 && args[0].equalsIgnoreCase(cmdHelp))) {
+                    sender.sendMessage(title + "github.com/haveric/statues - v" + plugin.getDescription().getVersion());
+                    sender.sendMessage(msgColor + "With wool right click a diamond block to construct the statue");
+                    sender.sendMessage("/" + cmdMain + " [name] (" + curColor + PlayerToBuild.getPlayer((Player) sender) + defColor + ") - " + msgColor + "Change the next statue built to [name]");
+                } else if (args.length == 1) {
+                    sender.sendMessage(msgColor + "With wool, right click a diamond block to construct " + highlightColor + args[0] + "'s" + msgColor + " statue");
+                    PlayerToBuild.setPlayer((Player) sender, args[0]);
+                }
+            }
+        } else {
+            sender.sendMessage(title + " You do not have access to this command.");
+        }
+        return false;
+    }
 
-	public static String getMain() {
-		return cmdMain;
-	}
+    public static String getMain() {
+        return cmdMain;
+    }
 
-	public static void setMain(String cmd) {
-		cmdMain = cmd;
-	}
+    public static void setMain(String cmd) {
+        cmdMain = cmd;
+    }
 
-	public static String getMainAlt() {
-		return cmdMainAlt;
-	}
+    public static String getMainAlt() {
+        return cmdMainAlt;
+    }
 
-	public static void setMainAlt(String cmd) {
-		cmdMainAlt = cmd;
-	}
+    public static void setMainAlt(String cmd) {
+        cmdMainAlt = cmd;
+    }
 
-	public static String getHelp() {
-		return cmdHelp;
-	}
+    public static String getHelp() {
+        return cmdHelp;
+    }
 
-	public static void setHelp(String cmd) {
-		cmdHelp = cmd;
-	}
+    public static void setHelp(String cmd) {
+        cmdHelp = cmd;
+    }
 }
