@@ -371,7 +371,6 @@ public class StPlayerInteract implements Listener {
             }
         }
         return items.get(val);
-        
     }
 
     /**
