@@ -3,6 +3,7 @@ package haveric.statues;
 import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,12 @@ public class Commands implements CommandExecutor {
     private static String cmdMainAlt = "statues";
 
     private static String cmdHelp = "help";
+
+    private static String cmdHere = "here";
+
+    private static String cmdRestore = "restore";
+    private static String cmdDestroy = "destroy";
+
 
     public Commands(Statues st) {
         plugin = st;
@@ -40,9 +47,17 @@ public class Commands implements CommandExecutor {
                     sender.sendMessage(title + "github.com/haveric/statues - v" + plugin.getDescription().getVersion());
                     sender.sendMessage(msgColor + "With wool right click a diamond block to construct the statue");
                     sender.sendMessage("/" + cmdMain + " [name] (" + curColor + PlayerToBuild.getPlayer((Player) sender) + defColor + ") - " + msgColor + "Change the next statue built to [name]");
+                } else if (args.length >= 1 && args[0].equalsIgnoreCase(cmdHere)) {
+                    Block b = ((Player) sender).getTargetBlock(null, 100);
                 } else if (args.length == 1) {
-                    sender.sendMessage(msgColor + "With wool, right click a diamond block to construct " + highlightColor + args[0] + "'s" + msgColor + " statue");
-                    PlayerToBuild.setPlayer((Player) sender, args[0]);
+                    if (args[0].equalsIgnoreCase(cmdRestore)) {
+
+                    } else if (args[0].equalsIgnoreCase(cmdDestroy)) {
+
+                    } else {
+                        sender.sendMessage(msgColor + "With wool, right click a diamond block to construct " + highlightColor + args[0] + "'s" + msgColor + " statue");
+                        PlayerToBuild.setPlayer((Player) sender, args[0]);
+                    }
                 }
             }
         } else {

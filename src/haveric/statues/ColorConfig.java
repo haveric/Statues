@@ -75,7 +75,7 @@ public class ColorConfig {
             }
             sc2.close();
         } catch (FileNotFoundException e) {
-            Statues.log.warning(String.format("[%s] defaultColors.txt not found." , plugin.getDescription().getName()));
+            Statues.log.warning("defaultColors.txt not found.");
             e.printStackTrace();
         }
 
@@ -100,7 +100,7 @@ public class ColorConfig {
             }
             sc3.close();
         } catch (FileNotFoundException e) {
-            Statues.log.warning(String.format("[%s] customColors.txt not found." , plugin.getDescription().getName()));
+            Statues.log.warning("customColors.txt not found.");
             e.printStackTrace();
         }
     }
@@ -159,7 +159,7 @@ public class ColorConfig {
             out.close();
             fstream.close();
         } catch (IOException e) {
-            Statues.log.warning(String.format("[%s] File %s not found." , plugin.getDescription().getName(), f.getName()));
+            Statues.log.warning(String.format("File %s not found.", f.getName()));
         }
     }
 

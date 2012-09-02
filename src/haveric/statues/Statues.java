@@ -10,7 +10,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Statues extends JavaPlugin {
-    public static final Logger log = Logger.getLogger("Minecraft");
+    static Logger log;
     private final StPlayerInteract playerInteract = new StPlayerInteract(this);
     private Commands commands = new Commands(this);
 
@@ -22,6 +22,7 @@ public class Statues extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        log = getLogger();
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(playerInteract, this);
 
@@ -35,7 +36,6 @@ public class Statues extends JavaPlugin {
 
         getCommand(Commands.getMain()).setExecutor(commands);
         getCommand(Commands.getMainAlt()).setExecutor(commands);
-
     }
 
     @Override

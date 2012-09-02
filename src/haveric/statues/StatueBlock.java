@@ -1,10 +1,13 @@
 package haveric.statues;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 
 public class StatueBlock {
 
+    private BlockState prevBlock;
     private Block block;
+    
     private Item item;
 
     public StatueBlock(Block b, Item i) {
@@ -26,5 +29,13 @@ public class StatueBlock {
 
     public Item getItem() {
         return item;
+    }
+    
+    public void setPrevBlock(BlockState b) {
+        prevBlock = b;
+    }
+    
+    public BlockState getPrevBlock() {
+        return prevBlock;
     }
 }

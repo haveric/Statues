@@ -55,38 +55,12 @@ public class StPlayerInteract implements Listener {
                     return;
                 }
 
-                Direction direction = getCardinalDirection(player);
-                //player.sendMessage("Statue attempted with direction: " + direction);
+                Direction direction = getDirection(player);
 
-                try {
-                    URL url = new URL("http://s3.amazonaws.com/MinecraftSkins/" + playerName + ".png");
-                    URLConnection urlConnection = url.openConnection();
 
-                    BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                int[][][] pixelData = loadTexture(player, playerName);
 
-                    if (Config.isChatty()) {
-                        player.sendMessage("Downloading pixel data through redstone modem");
-                    }
-
-                    // TODO: surely there's a better way to store this
-                    int[][][] pixelData;
-
-                    BufferedImage img = ImageIO.read(in);
-
-                    in.close();
-                    pixelData = new int[img.getWidth()][img.getHeight()][4];
-                    int[] rgb;
-
-                    for (int i = 0; i < img.getHeight(); i++) {
-                        for (int j = 0; j < img.getWidth(); j++) {
-                            rgb = getPixelData(img, j, i);
-
-                            for (int k = 0; k < rgb.length; k++) {
-                                pixelData[j][i][k] = rgb[k];
-                            }
-                        }
-                    }
-
+                if (pixelData != null){
                     if (Config.isChatty()) {
                         player.sendMessage("Creating pixel mapping matrix for woolBit color space");
                         player.sendMessage("Shearing sheep...");
@@ -101,14 +75,47 @@ public class StPlayerInteract implements Listener {
                     if (Config.isChatty()) {
                         player.sendMessage("Boom! Look at that statue of " + playerName + "!");
                     }
-
-                } catch (Exception e) {
-                    player.sendMessage("The skin for " + playerName + " was not found. Please check your cApiTAliZation & speeling.");
                 }
             }
         }
     }
 
+    private int[][][] loadTexture(Player builder, String statueName) {
+        int[][][] pixelData = null;
+        try {
+            URL url = new URL("http://s3.amazonaws.com/MinecraftSkins/" + statueName + ".png");
+            URLConnection urlConnection = url.openConnection();
+
+            BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
+
+            if (Config.isChatty()) {
+                builder.sendMessage("Downloading pixel data through redstone modem");
+            }
+
+            // TODO: surely there's a better way to store this
+            
+
+            BufferedImage img = ImageIO.read(in);
+
+            in.close();
+            pixelData = new int[img.getWidth()][img.getHeight()][4];
+            int[] rgb;
+
+            for (int i = 0; i < img.getHeight(); i++) {
+                for (int j = 0; j < img.getWidth(); j++) {
+                    rgb = getPixelData(img, j, i);
+
+                    for (int k = 0; k < rgb.length; k++) {
+                        pixelData[j][i][k] = rgb[k];
+                    }
+                }
+            }
+        } catch (Exception e) {
+            builder.sendMessage("The skin for " + statueName + " was not found. Please check your cApiTAliZation & speeling.");
+        }
+        return pixelData;
+    }
+    
     private void createStatue(World w, Direction direction, int wx, int wy, int wz, int[][][] pd) {
 
         ArrayList<StatueBlock> statueArray = new ArrayList<StatueBlock>();
@@ -295,8 +302,12 @@ public class StPlayerInteract implements Listener {
         }
 
         for (int i = 0; i < statueArray.size(); i++) {
-            Block block = statueArray.get(i).getBlock();
-            Item item = statueArray.get(i).getItem();
+            // save the old state so we can restore if we need to.
+            StatueBlock sBlock = statueArray.get(i);
+            sBlock.setPrevBlock(sBlock.getBlock().getState());
+            
+            Block block = sBlock.getBlock();
+            Item item = sBlock.getItem();
             if (block.getType() == Material.AIR) {
                 block.setType(item.getMaterial());
                 block.setData((byte) item.getData());
@@ -373,27 +384,12 @@ public class StPlayerInteract implements Listener {
         return items.get(val);
     }
 
-    /**
-     * Get the cardinal compass direction of a player.
-     *
-     * @param player
-     * @return
-     */
-    public static Direction getCardinalDirection(Player player) {
+    private static Direction getDirection(Player player) {
         double rot = (player.getLocation().getYaw() - 90) % 360;
         if (rot < 0) {
-            rot += 360.0;
+            rot += 360;
         }
-        return getDirection(rot);
-    }
 
-    /**
-     * Converts a rotation to a cardinal direction name.
-     *
-     * @param rot
-     * @return
-     */
-    private static Direction getDirection(double rot) {
         Direction dir = Direction.NONE;
 
         if (0 <= rot && rot < 22.5) {
