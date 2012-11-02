@@ -1,46 +1,27 @@
 package haveric.statues;
 
+import org.bukkit.entity.Player;
+
 public class Perms {
 
-    // TODO: make these defaults and load from file
-    private static String build = "statues.build";
-    private static String ignoreCost = "statues.ignoreCost";
-    private static String destroyLand = "statues.destroyLand";
-    private static String adjust = "statues.adjust";
+    private static String permBuild = "statues.build";
+    private static String permIgnoreCost = "statues.ignorecost";
+    private static String permDestroyLand = "statues.destroyland";
+    private static String permAdjust = "statues.adjust";
 
-    public static void setBuild(String newPerm) {
-        build = newPerm;
-        // TODO: set other stuff
+    public static boolean canBuild(Player player) {
+    	return player.hasPermission(permBuild);
     }
-
-    public static String getBuild() {
-        return build;
+    
+    public static boolean hasIgnoreCost(Player player) {
+    	return player.hasPermission(permIgnoreCost);
     }
-
-    public static void setIgnoreCost(String newPerm) {
-        ignoreCost = newPerm;
-        // TODO: set other stuff
+    
+    public static boolean canDestroyLand(Player player) {
+    	return player.hasPermission(permDestroyLand);
     }
-
-    public static String getIgnoreCost() {
-        return ignoreCost;
-    }
-
-    public static void setDestroyLand(String newPerm) {
-        destroyLand = newPerm;
-        // TODO: more stuff
-    }
-
-    public static String getDestroyLand() {
-        return destroyLand;
-    }
-
-    public static void setAdjust(String newPerm) {
-        adjust = newPerm;
-        // TODO: more stuff
-    }
-
-    public static String getAdjust() {
-        return adjust;
+    
+    public static boolean canAdjust(Player player) {
+    	return player.hasPermission(permAdjust);
     }
 }

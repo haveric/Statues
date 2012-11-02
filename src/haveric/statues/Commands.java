@@ -1,7 +1,5 @@
 package haveric.statues;
 
-import net.milkbowl.vault.permission.Permission;
-
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -16,11 +14,8 @@ public class Commands implements CommandExecutor {
     // Commands
     private static String cmdMain    = "statue";
     private static String cmdMainAlt = "statues";
-
     private static String cmdHelp = "help";
-
     private static String cmdHere = "here";
-
     private static String cmdRestore = "restore";
     private static String cmdDestroy = "destroy";
 
@@ -31,7 +26,6 @@ public class Commands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        Permission perm = plugin.getPerm();
         ChatColor msgColor = ChatColor.DARK_AQUA;
         ChatColor highlightColor = ChatColor.YELLOW;
         ChatColor curColor = ChatColor.GOLD;
@@ -40,7 +34,7 @@ public class Commands implements CommandExecutor {
         String title = msgColor + "[" + ChatColor.GRAY + plugin.getDescription().getName() + msgColor + "] ";
 
 
-        if (sender.isOp() || (perm != null && perm.has((Player) sender, Perms.getBuild()))) {
+        if (Perms.canBuild((Player) sender)) {
             if (commandLabel.equalsIgnoreCase(cmdMain) || commandLabel.equalsIgnoreCase(cmdMainAlt)) {
 
                 if (args.length == 0 || (args.length == 1 && args[0].equalsIgnoreCase(cmdHelp))) {
@@ -68,25 +62,5 @@ public class Commands implements CommandExecutor {
 
     public static String getMain() {
         return cmdMain;
-    }
-
-    public static void setMain(String cmd) {
-        cmdMain = cmd;
-    }
-
-    public static String getMainAlt() {
-        return cmdMainAlt;
-    }
-
-    public static void setMainAlt(String cmd) {
-        cmdMainAlt = cmd;
-    }
-
-    public static String getHelp() {
-        return cmdHelp;
-    }
-
-    public static void setHelp(String cmd) {
-        cmdHelp = cmd;
     }
 }

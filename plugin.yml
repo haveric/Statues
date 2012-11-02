@@ -1,7 +1,7 @@
 name: Statues
 main: haveric.statues.Statues
 version: 0.3
-depend: [Vault]
+softdepend: [Vault]
 author: haveric
 description: >
              Create statues
@@ -10,3 +10,23 @@ commands:
         aliases: [statue]
         description: Create statues
         usage:
+permissions:
+    statues.*:
+        description: Gives access to all Statues Permissions
+        children:
+            statues.build: true
+            statues.ignorecost: true
+            statues.destroyland: true
+            statues.adjust: true
+    statues.build:
+        description: Allows user to build a statue
+        default: false
+    statues.ignorecost:
+        description: Allows user to build a statue without paying the normal cost
+        default: false
+    statues.destroyland:
+        description: Allows the user to create a statue that will destroy land in its way
+        default: false
+    statues.adjust:
+        description: Allows a user to adjust global settings
+        default: false

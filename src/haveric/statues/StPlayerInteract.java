@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.permission.Permission;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -34,7 +33,6 @@ public class StPlayerInteract implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Economy econ = plugin.getEcon();
-        Permission perm = plugin.getPerm();
         Player player = event.getPlayer();
 
         World world = player.getWorld();
@@ -45,10 +43,10 @@ public class StPlayerInteract implements Listener {
         String playerName = PlayerToBuild.getPlayer(player);
 
         boolean currencyEnabled = true;
-        if (player.isOp() || (perm != null && perm.has(player, Perms.getBuild()))) {
+        if (Perms.canBuild(player)) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.DIAMOND_BLOCK && holding.getType() == Material.WOOL) {
 
-                if (econ == null || (perm != null && perm.has(player, Perms.getIgnoreCost()))) {
+                if (econ == null || Perms.hasIgnoreCost(player)) {
                     currencyEnabled = false;
                 } else if (!econ.has(player.getName(), Config.getCost())) {
                     player.sendMessage(ChatColor.RED + "Not enough money to create a statue. Need " + Config.getCost());
