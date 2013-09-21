@@ -1,9 +1,5 @@
 package haveric.statues;
 
-import haveric.statues.mcstats.Metrics;
-import haveric.statues.mcstats.Metrics.Graph;
-
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import net.milkbowl.vault.economy.Economy;
@@ -21,8 +17,6 @@ public class Statues extends JavaPlugin {
     // Vault
     private Economy econ;
 
-    private Metrics metrics;
-
     @Override
     public void onEnable() {
         log = getLogger();
@@ -38,8 +32,6 @@ public class Statues extends JavaPlugin {
         ColorConfig.setup();
 
         getCommand(Commands.getMain()).setExecutor(commands);
-
-        setupMetrics();
     }
 
     @Override
@@ -56,27 +48,5 @@ public class Statues extends JavaPlugin {
 
     public Economy getEcon() {
         return econ;
-    }
-
-    private void setupMetrics() {
-        try {
-            metrics = new Metrics(this);
-
-            // Custom data
-            Graph javaGraph = metrics.createGraph("Java Version");
-            String javaVersion = System.getProperty("java.version");
-            javaGraph.addPlotter(new Metrics.Plotter(javaVersion) {
-                @Override
-                public int getValue() {
-                    return 1;
-                }
-            });
-            metrics.addGraph(javaGraph);
-            // End Custom data
-
-            metrics.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
