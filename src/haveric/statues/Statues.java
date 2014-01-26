@@ -13,7 +13,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Statues extends JavaPlugin {
     static Logger log;
-    private final StPlayerInteract playerInteract = new StPlayerInteract(this);
     private Commands commands = new Commands(this);
 
 
@@ -26,7 +25,6 @@ public class Statues extends JavaPlugin {
     public void onEnable() {
         log = getLogger();
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(playerInteract, this);
 
         Config.init(this);
         ColorConfig.init(this);

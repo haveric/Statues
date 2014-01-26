@@ -1,6 +1,10 @@
 package haveric.statues;
 
+import haveric.statues.Statue.Direction;
+import net.milkbowl.vault.economy.Economy;
+
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -42,7 +46,54 @@ public class Commands implements CommandExecutor {
                     sender.sendMessage(msgColor + "With wool right click a diamond block to construct the statue");
                     sender.sendMessage("/" + cmdMain + " [name] (" + curColor + PlayerToBuild.getPlayer((Player) sender) + defColor + ") - " + msgColor + "Change the next statue built to [name]");
                 } else if (args.length >= 1 && args[0].equalsIgnoreCase(cmdHere)) {
-                    Block b = ((Player) sender).getTargetBlock(null, 100);
+
+                    if (sender instanceof Player) {
+                        Player player = (Player) sender;
+
+                        Block block = player.getTargetBlock(null, 100);
+                        World world = block.getWorld();
+
+                        String playerName = PlayerToBuild.getPlayer(player);
+                        boolean currencyEnabled = true;
+                        boolean canBuild = Perms.canBuild(player);
+                        if (canBuild) {
+                            Economy econ = plugin.getEcon();
+                            if (econ == null || Perms.hasIgnoreCost(player)) {
+                                currencyEnabled = false;
+                            } else if (!econ.has(player.getName(), Config.getCost())) {
+                                player.sendMessage(ChatColor.RED + "Not enough money to create a statue. Need " + Config.getCost());
+                                canBuild = false;
+                            }
+
+                            if (canBuild) {
+
+                                Statue s = new Statue();
+
+                                Direction direction = Statue.getDirection(player);
+
+
+                                int[][][] pixelData = s.loadTexture(player, playerName);
+
+                                if (pixelData != null){
+                                    if (Config.isChatty()) {
+                                        player.sendMessage("Creating pixel mapping matrix for woolBit color space");
+                                        player.sendMessage("Shearing sheep...");
+                                    }
+
+                                    s.createStatue(world, direction, block.getX(), block.getY(), block.getZ(), pixelData);
+
+                                    if (currencyEnabled) {
+                                        econ.withdrawPlayer(player.getName(), Config.getCost());
+                                    }
+
+                                    if (Config.isChatty()) {
+                                        player.sendMessage("Boom! Look at that statue of " + playerName + "!");
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                 } else if (args.length == 1) {
                     if (args[0].equalsIgnoreCase(cmdRestore)) {
 
