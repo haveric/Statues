@@ -23,7 +23,7 @@ public class Config {
 
     public static void init(Statues st) {
         plugin = st;
-        configFile = new File(plugin.getDataFolder() + "/config.yml");
+        configFile = new File(plugin.getDataFolder() + File.separator + "config.yml");
         config = YamlConfiguration.loadConfiguration(configFile);
     }
 

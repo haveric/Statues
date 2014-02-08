@@ -21,8 +21,8 @@ public class ColorConfig {
 
     public static void init(Statues st) {
         plugin = st;
-        defaultColors = new File(plugin.getDataFolder() + "/defaultColors.txt");
-        customColors = new File(plugin.getDataFolder() + "/customColors.txt");
+        defaultColors = new File(plugin.getDataFolder() + File.separator + "defaultColors.txt");
+        customColors = new File(plugin.getDataFolder() + File.separator + "customColors.txt");
     }
 
     public static void setup() {
@@ -48,7 +48,7 @@ public class ColorConfig {
                 int fileVersion = sc.nextInt();
                 if (fileVersion < COLORS_VERSION) {
                     defaultColors.delete();
-                    defaultColors = new File(plugin.getDataFolder() + "/defaultColors.txt");
+                    defaultColors = new File(plugin.getDataFolder() + File.separator + "defaultColors.txt");
                     writeColors(defaultColors, true);
                 }
             } else {
