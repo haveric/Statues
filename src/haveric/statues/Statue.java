@@ -301,7 +301,6 @@ public class Statue {
     }
 
     private static int[] getPixelData(BufferedImage img, int x, int y) {
-
         int argb = img.getRGB(x, y);
 
         int[] rgb = new int[] {

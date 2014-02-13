@@ -50,8 +50,6 @@ public class Commands implements CommandExecutor {
                     if (sender instanceof Player) {
                         Player player = (Player) sender;
 
-                        Block block = player.getTargetBlock(null, 100);
-                        World world = block.getWorld();
 
                         String playerName = PlayerToBuild.getPlayer(player);
                         boolean currencyEnabled = true;
@@ -66,6 +64,8 @@ public class Commands implements CommandExecutor {
                             }
 
                             if (canBuild) {
+                                Block block = player.getTargetBlock(null, 100);
+                                World world = block.getWorld();
 
                                 Statue s = new Statue();
 
