@@ -46,7 +46,7 @@ public class Statue {
     public int[][][] loadTexture(Player builder, String statueName) {
         int[][][] pixelData = null;
         try {
-            URL url = new URL("http://s3.amazonaws.com/MinecraftSkins/" + statueName + ".png");
+            URL url = new URL("http://skins.minecraft.net/MinecraftSkins/" + statueName + ".png");
             URLConnection urlConnection = url.openConnection();
 
             BufferedInputStream in = new BufferedInputStream(urlConnection.getInputStream());
